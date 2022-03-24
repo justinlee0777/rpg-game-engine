@@ -1,0 +1,25 @@
+import { Animation, CommandType } from '../../command.interface';
+import { Priority } from '../../priority';
+import { Skill } from '../skill.interface';
+
+/**
+ * A basic attack that every character possesses.
+ * This is for prototype purposes. The more I think about it, the more
+ * it seems counter to the design of the game.
+ */
+export class Attack implements Skill {
+    displayName = 'Attack';
+    description = 'A basic attack.';
+
+    damage = 5;
+
+    priority = Priority.EAGER;
+
+    type = CommandType.SKILL;
+
+    animation: {
+        beforeEffect: Animation;
+        runEffect: Animation;
+        afterEffect: Animation;
+    };
+}

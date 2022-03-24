@@ -1,24 +1,23 @@
 import { Character } from 'characters';
 
+export interface EndCondition {
+    (): boolean;
+}
+
 export interface Puzzle {
     players: Array<Character>;
 
     enemies: Array<Character>;
 
-    characters: Array<Character>;
+    victoryConditions: Array<EndCondition>;
 
-    /** Hmm. No return? */
-    run(): void;
+    loseConditions: Array<EndCondition>;
 }
 
 /**
- * Represents a change to the Puzzle state.
- * Needs to be executed by the game itself.
- *
+ * Abstract step ran in the puzzle's queue.
  * For characters to react to certain changes in the game, this should return a clone of the Puzzle.
- * 
- * If the callback form is too cumbersome, this can be changed into JSON instead and handled by a utility.
  */
-export interface PuzzleEffect {
-    (puzzle: Puzzle): Puzzle;
+export interface Step {
+    (puzzle: Puzzle): Promise<Puzzle>;
 }

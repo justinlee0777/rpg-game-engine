@@ -1,10 +1,11 @@
-import { Skill } from 'skills';
+import { Command } from 'commands';
+import { Attack } from 'commands/implementations';
 
 import { Character, Stats } from '../character.interface'
 
 export class Hider implements Character {
     readonly initial: Readonly<Stats>;
-    readonly skills: Array<Skill>;
+    readonly commands: Array<Command>;
 
     current: Stats;
 
@@ -13,11 +14,6 @@ export class Hider implements Character {
             health: 50,
         };
         this.current = { ...this.initial };
-        this.skills = [];
-    }
-
-    defeated(): boolean {
-        // This will be a common losing condition. Consider putting it into a util.
-        return this.current.health <= 0;
+        this.commands = [new Attack()];
     }
 }

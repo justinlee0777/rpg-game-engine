@@ -1,4 +1,4 @@
-import { Skill } from 'skills';
+import { Command } from 'commands';
 
 export interface Stats {
     health: number;
@@ -9,9 +9,7 @@ export interface Stats {
  */
 export interface Character {
     readonly initial: Readonly<Stats>;
-    readonly skills: Array<Skill>;
+    readonly commands: Array<Command>;
 
     current: Stats;
-
-    defeated(): boolean;
 }
