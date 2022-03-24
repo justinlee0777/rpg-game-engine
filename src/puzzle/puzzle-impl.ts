@@ -35,8 +35,7 @@ export class PuzzleImpl implements Puzzle {
     }
 
     private done(): boolean {
-        // return this.players.every(p => p.defeated()) || this.enemies.every(e => e.defeated());
-        return false;
+        return this.players.every(p => p.defeated()) || this.enemies.every(e => e.defeated());
     }
 
     private async listenForUserInput() {
@@ -60,6 +59,3 @@ export class PuzzleImpl implements Puzzle {
         return animation.finished;
     }
 }
-
-// To remove
-new PuzzleImpl({ players: [], enemies: [] }).run();
