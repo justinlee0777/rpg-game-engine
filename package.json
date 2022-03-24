@@ -1,0 +1,17 @@
+{
+  "name": "rpg-game-engine",
+  "version": "1.0.0",
+  "description": "Engine for a hypothetical RPG game.",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "rpg-game-engine"
+  },
+  "author": "Justin Lee",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.6.2"
+  }
+}

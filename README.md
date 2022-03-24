@@ -1,3 +1,11 @@
+### To use
+
+Environment: node@15.10.0, npm@7.5.3
+
+1. Load dependencies: `npm ci`
+2. Build the package: `npm run build`
+3. Host the package through a web server.
+
 ### Proposal
 
 A very, very small game engine meant only for "lenient puzzle-based RPGs":
