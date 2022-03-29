@@ -1,5 +1,6 @@
-import { Command } from 'commands';
+import { Action } from 'action-coordinator';
+import { AI } from 'ai';
 
 export interface ListenForUserInput {
-    (): Promise<Array<Command>>;
+    (enemyAi: AI): Promise<Array<Action>>;
 }

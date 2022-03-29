@@ -1,3 +1,4 @@
+import { AI } from 'ai';
 import { Character } from 'characters';
 
 export interface EndCondition {
@@ -7,7 +8,7 @@ export interface EndCondition {
 export interface Puzzle {
     players: Array<Character>;
 
-    enemies: Array<Character>;
+    enemies: AI;
 
     victoryConditions: Array<EndCondition>;
 

@@ -1,9 +1,7 @@
+import { Animation } from 'ui';
+
 import { Priority } from './priority';
 import { Skill } from './skills';
-
-export interface Animation {
-    (): Promise<void>;
-}
 
 export interface BaseCommand {
     priority: Priority;

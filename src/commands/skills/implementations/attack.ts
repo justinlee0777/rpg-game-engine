@@ -1,5 +1,8 @@
-import { Animation, CommandType } from '../../command.interface';
+import { AnimatorInstance } from 'ui-implementation/animator-impl';
+
+import { CommandType } from '../../command.interface';
 import { Priority } from '../../priority';
+import { SkillType } from '../skill-type';
 import { Skill } from '../skill.interface';
 
 /**
@@ -15,11 +18,9 @@ export class Attack implements Skill {
 
     priority = Priority.EAGER;
 
-    type = CommandType.SKILL;
 
-    animation: {
-        beforeEffect: Animation;
-        runEffect: Animation;
-        afterEffect: Animation;
-    };
+    type = CommandType.SKILL;
+    skillType = SkillType.ATTACK;
+
+    animation = AnimatorInstance.animateSkill(SkillType.ATTACK);
 }
