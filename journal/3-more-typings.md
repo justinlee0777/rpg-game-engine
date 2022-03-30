@@ -1,0 +1,3 @@
+The original concept of the engine was to decouple UI and game logic completely, so that the code for the game can be reasoned with alone, separate from how it interacts from the UI. Perhaps this is a naive wish. I'm finding myself having to decide between creating a layer between the UI and character metadata versus embedding both together for convenience's sake. Furthermore, I'm a bit uncomfortable with how lax some of the contracts are, for example how much data is needed for the UI implementation to work correctly.
+
+I think after this effort to get a basic prototype working I will comment on the code thus written and see what would need refactoring.

@@ -5,6 +5,9 @@ import { AnimatorInstance } from 'ui-implementation/animator-impl';
 
 import { Action } from './action.interface';
 
+/**
+ * Represents the "calculation" stage of the game loop. The game takes the user's inputs and determines the flow of action.
+ */
 export class ActionCoordinator {
     async processPlayerInput(puzzle: Puzzle, playerActions: Array<Action>, enemyAi: AI): Promise<Puzzle> {
         playerActions = this.order(playerActions);
@@ -28,6 +31,7 @@ export class ActionCoordinator {
 
     /**
      * TODO: This needs to return an object so we can get the target's reaction.
+     * TODO: This should be its own engine - this calculates what a skill does based on its configuration.
      */
     private async applyAction(action: Action): Promise<void> {
         const { command, targets } = action;

@@ -6,7 +6,7 @@ import { ListenForUserInput } from 'ui/ui-input/ui-input.interface';
 
 const userInput: HTMLElement = document.getElementById('user-input');
 
-export const listenForUserInput: ListenForUserInput = async function listenForUserInput(players: Array<Character>, enemyAi: AI) {
+export const listenForUserInput: ListenForUserInput = async function listenForUserInput(players: Array<Character>, enemies: Array<Character>) {
     userInput.style.opacity = '1';
 
     return new Promise<Array<Action>>(resolve => {
@@ -15,7 +15,7 @@ export const listenForUserInput: ListenForUserInput = async function listenForUs
                 {
                     command: new Attack(),
                     source: [players[0]],
-                    targets: [enemyAi.characters[0]],
+                    targets: [enemies[0]],
                 },
             ];
             resolve(actions);

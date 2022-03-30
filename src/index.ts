@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     (async function run(): Promise<void> {
         while (puzzle.victoryConditions.every(victoryCondition => !victoryCondition())) {
-            const actions = await listenForUserInput(players, enemyAi);
+            const actions = await listenForUserInput(players, enemyAi.characters);
 
             await actionCoordinator.processPlayerInput(puzzle, actions, enemyAi);
         }

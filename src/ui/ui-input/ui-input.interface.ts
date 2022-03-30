@@ -2,6 +2,13 @@ import { Action } from 'action-coordinator';
 import { AI } from 'ai';
 import { Character } from 'characters';
 
+/**
+ * Function that listens for user's input and determines actions out of them.
+ */
 export interface ListenForUserInput {
-    (players: Array<Character>, enemyAi: AI): Promise<Array<Action>>;
+    /**
+     * @param players the user controls in a game
+     * @param enemies the user is battling in a game
+     */
+    (players: Array<Character>, enemies: Array<Character>): Promise<Array<Action>>;
 }

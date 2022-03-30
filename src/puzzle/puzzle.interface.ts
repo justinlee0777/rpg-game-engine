@@ -1,10 +1,17 @@
 import { AI } from 'ai';
 import { Character } from 'characters';
 
+/**
+ * Conditions for ending a specific puzzle.
+ * Takes no arguments and assumes they are initialized at the same time the puzzle is, to keep them flexible.
+ */
 export interface EndCondition {
     (): boolean;
 }
 
+/**
+ * Metadata for the game. Should not contain any functions.
+ */
 export interface Puzzle {
     players: Array<Character>;
 
