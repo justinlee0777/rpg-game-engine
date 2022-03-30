@@ -11,5 +11,8 @@ export interface Character {
     readonly initial: Readonly<Stats>;
     readonly commands: Array<Command>;
 
+    // temp
+    readonly element: HTMLElement;
+
     current: Stats;
 }

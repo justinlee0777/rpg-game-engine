@@ -12,6 +12,9 @@ module.exports = {
             puzzle: path.relative(__dirname, 'src/puzzle'),
         },
     },
+    optimization: {
+        minimize: false,
+    },
     module: {
         rules: [
             {

@@ -1,3 +1,4 @@
+import { Character } from 'characters';
 import { SkillType } from 'commands/skills/skill-type';
 import { Animator } from 'ui';
 import { SkillAnimation } from 'ui/animations';
@@ -11,10 +12,10 @@ export class AnimatorImpl implements Animator {
         afterEffect: () => Promise.resolve(),
     };
 
-    animateSkill(type: SkillType): SkillAnimation {
+    animateSkill(type: SkillType, sources: Array<Character>): SkillAnimation {
         switch (type) {
             case SkillType.ATTACK:
-                return attackAnimation;
+                return attackAnimation(sources[0]);
             default:
                 return this.defaultAnimation;
         }

@@ -9,7 +9,10 @@ export class Hider implements Character {
 
     current: Stats;
 
-    constructor() {
+    constructor(
+        // temp
+        public readonly element: HTMLElement
+    ) {
         this.initial = {
             health: 50,
         };

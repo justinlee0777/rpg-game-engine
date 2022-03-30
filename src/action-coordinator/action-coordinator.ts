@@ -1,6 +1,7 @@
 import { AI } from 'ai';
 import { CommandType } from 'commands';
 import { Puzzle } from 'puzzle';
+import { AnimatorInstance } from 'ui-implementation/animator-impl';
 
 import { Action } from './action.interface';
 
@@ -12,7 +13,7 @@ export class ActionCoordinator {
         const actions = this.order([...playerActions, ...enemyActions]);
 
         for (const action of actions) {
-            const { beforeEffect, runEffect, afterEffect } = action.command.animation;
+            const { beforeEffect, runEffect, afterEffect } = AnimatorInstance.animateSkill(action.command.skillType, action.source);
 
             await beforeEffect();
             await Promise.all([
@@ -25,17 +26,18 @@ export class ActionCoordinator {
         return Promise.resolve(puzzle);
     }
 
-    private applyAction(action: Action): Promise<void> {
+    /**
+     * TODO: This needs to return an object so we can get the target's reaction.
+     */
+    private async applyAction(action: Action): Promise<void> {
         const { command, targets } = action;
 
         switch (command.type) {
             case CommandType.SKILL:
-                return new Promise(resolve => {
-                    targets.forEach(target => target.current.health -= command.damage);
-                    resolve();
-                });
+                targets.forEach(target => target.current.health -= command.damage);
+                return;
             default:
-                return Promise.resolve();
+                return;
         }
     }
 

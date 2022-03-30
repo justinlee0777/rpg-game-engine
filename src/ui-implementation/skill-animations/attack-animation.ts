@@ -1,18 +1,19 @@
+import { Character } from 'characters';
 import { SkillAnimation } from 'ui';
 
-const dogIcon = document.getElementById('dog-icon');
+export function attackAnimation(source: Character): SkillAnimation {
+    return {
+        beforeEffect: () => Promise.resolve(),
+        runEffect: () => {
+            const animation = source.element.animate([
+                { transform: 'rotate(360deg)' },
+            ], {
+                duration: 600,
+                iterations: 1,
+            });
 
-export const attackAnimation: SkillAnimation = {
-    beforeEffect: () => Promise.resolve(),
-    runEffect: () => {
-        const animation = dogIcon.animate([
-            { transform: 'rotate(360deg)' },
-        ], {
-            duration: 600,
-            iterations: 1,
-        });
-
-        return animation.finished.then();
-    },
-    afterEffect: () => Promise.resolve(),
-};
+            return animation.finished.then();
+        },
+        afterEffect: () => Promise.resolve(),
+    };
+}

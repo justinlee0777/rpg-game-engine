@@ -2,6 +2,7 @@ import { Action } from 'action-coordinator';
 import { Hider } from 'characters/implementations';
 import { Attack } from 'commands/implementations';
 import { Puzzle } from 'puzzle';
+import { SpriteHelperInstance } from 'ui-implementation/sprite-helper-impl';
 
 import { AI } from '../ai.interface';
 
@@ -10,13 +11,14 @@ import { AI } from '../ai.interface';
  */
 export class HiderAI implements AI {
     characters = [
-        new Hider(),
+        new Hider(SpriteHelperInstance.get()),
     ];
 
     getActions(puzzle: Puzzle): Array<Action> {
         return [
             {
                 command: new Attack(),
+                source: this.characters,
                 targets: [puzzle.players[0]],
             },
         ];

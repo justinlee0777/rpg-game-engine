@@ -21,6 +21,4 @@ export class Attack implements Skill {
 
     type = CommandType.SKILL;
     skillType = SkillType.ATTACK;
-
-    animation = AnimatorInstance.animateSkill(SkillType.ATTACK);
 }

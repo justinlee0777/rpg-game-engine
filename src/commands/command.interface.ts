@@ -1,17 +1,8 @@
-import { Animation } from 'ui';
-
 import { Priority } from './priority';
 import { Skill } from './skills';
 
 export interface BaseCommand {
     priority: Priority;
-
-    animation: {
-        // Animator should be a separate service in "ui".
-        beforeEffect: Animation;
-        runEffect: Animation;
-        afterEffect: Animation;
-    };
 }
 
 export enum CommandType {
