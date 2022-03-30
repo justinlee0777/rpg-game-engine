@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Engine for a hypothetical RPG game.",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "build:dev": "webpack --mode=development"
   },
   "repository": {
     "type": "git",
