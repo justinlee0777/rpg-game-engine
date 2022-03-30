@@ -1,7 +1,15 @@
+import { Character } from 'characters';
 import { Action } from './action.interface';
-import { Effect } from './effect.interface';
+import { Effect, EffectReaction } from './effect.interface';
 
+/**
+ * Calculates the effects of commands onto the puzzle itself.
+ */
 export class CommandCalculator {
+    /**
+     * Calculate the effects of commands.
+     * @returns a configuration object for animators and characters to use
+     */
     calculateEffect(action: Action): Effect {
         const { command, targets } = action;
 
@@ -15,6 +23,14 @@ export class CommandCalculator {
                 }
             },
         };
+    }
+
+    /**
+     * Calculate a target's reaction to an effect,
+     */
+    calculateReaction(effect: Effect, targets: Array<Character>): EffectReaction {
+        // For now, foiling is not implemented as there is no character that can foil.
+        return { source: effect };
     }
 }
 

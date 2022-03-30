@@ -1,7 +1,9 @@
+import { Effect, EffectReaction } from 'action-coordinator';
 import { Character } from 'characters';
 import { SkillType } from 'commands/skills/skill-type';
 import { Animator } from 'ui';
-import { SkillAnimation } from 'ui/animations';
+import { Animation, SkillAnimation } from 'ui/animations';
+import { damageAnimation } from './reaction-animations/damage-animation';
 
 import { attackAnimation } from './skill-animations/attack-animation';
 
@@ -19,6 +21,19 @@ export class AnimatorImpl implements Animator {
             default:
                 return this.defaultAnimation;
         }
+    }
+
+    animateReaction(effect: Effect, reaction: EffectReaction, targets: Array<Character>): Animation {
+        if (reaction.foiled) {
+            // TODO implement when implementing a foiling skill.
+        }
+
+        if (effect.damaging) {
+            return () => Promise.all([
+                ...targets.map(target => damageAnimation(target)()),
+            ]).then();
+        }
+        return () => Promise.resolve();
     }
 }
 

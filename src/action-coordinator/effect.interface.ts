@@ -8,3 +8,14 @@ export interface Effect {
     /** Whether the effect is damaging. */
     damaging: boolean;
 }
+
+/**
+ * The reaction to an effect. @see EffectReaction#foiled for details.
+ */
+export interface EffectReaction {
+    source: Effect;
+    /**
+     * Whether the effect is foiled or not. If this is filled, this means the effect is foiled.
+     */
+    foiled?: Effect;
+}
