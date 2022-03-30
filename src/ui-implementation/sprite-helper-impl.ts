@@ -1,13 +1,15 @@
+import { CharacterType, Hider, Test } from 'characters/implementations';
 import { SpriteHelper } from 'ui';
 
 export class SpriteHelperImpl implements SpriteHelper {
-    private elements = [
-        () => document.getElementById('dog-icon'),
-        () => document.getElementById('enemy-icon')
-    ];
-
-    get(): HTMLElement {
-        return this.elements.pop()?.();
+    get(type: CharacterType): HTMLElement {
+        switch (type) {
+            case Hider:
+            case Test:
+                const sprite = document.createElement('img');
+                sprite.src = 'https://th.bing.com/th/id/OIP.Tg20QY9WPX17amOdL1LMnAHaHa?pid=ImgDet&rs=1';
+                return sprite;
+        }
     }
 }
 

@@ -1,48 +1,48 @@
 import { AI } from 'ai';
-import { CommandType } from 'commands';
 import { Puzzle } from 'puzzle';
 import { AnimatorInstance } from 'ui-implementation/animator-impl';
 
 import { Action } from './action.interface';
+import { CommandCalculatorInstance } from './command-calculator';
 
 /**
  * Represents the "calculation" stage of the game loop. The game takes the user's inputs and determines the flow of action.
  */
 export class ActionCoordinator {
-    async processPlayerInput(puzzle: Puzzle, playerActions: Array<Action>, enemyAi: AI): Promise<Puzzle> {
+
+    /**
+     * Given:
+     * 1. The player's input.
+     *
+     * Do:
+     * 1. Get the AI's actions.
+     * 2. Order all actions.
+     * 3. Get reactions to actions, thereby getting the full list of actions.
+     * 4. Get the sequence of animations/calculations.
+     * 5. Run.
+     */
+    async iterateGame(puzzle: Puzzle, playerActions: Array<Action>, enemyAi: AI): Promise<Puzzle> {
         playerActions = this.order(playerActions);
         const enemyActions = enemyAi.getActions(puzzle);
 
         const actions = this.order([...playerActions, ...enemyActions]);
 
+        // TODO incorporate reactions
         for (const action of actions) {
             const { beforeEffect, runEffect, afterEffect } = AnimatorInstance.animateSkill(action.command.skillType, action.source);
 
             await beforeEffect();
             await Promise.all([
-                this.applyAction(action),
+                new Promise(resolve => {
+                    CommandCalculatorInstance.calculateEffect(action).execute();
+                    resolve(undefined);
+                }),
                 runEffect(),
             ]);
             await afterEffect();
         }
 
         return Promise.resolve(puzzle);
-    }
-
-    /**
-     * TODO: This needs to return an object so we can get the target's reaction.
-     * TODO: This should be its own engine - this calculates what a skill does based on its configuration.
-     */
-    private async applyAction(action: Action): Promise<void> {
-        const { command, targets } = action;
-
-        switch (command.type) {
-            case CommandType.SKILL:
-                targets.forEach(target => target.current.health -= command.damage);
-                return;
-            default:
-                return;
-        }
     }
 
     /**

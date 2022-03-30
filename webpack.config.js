@@ -12,6 +12,9 @@ module.exports = {
             puzzle: path.relative(__dirname, 'src/puzzle'),
         },
     },
+    /**
+     * TODO Ugh, this got committed. Need to create a dev mode.
+     */
     optimization: {
         minimize: false,
     },

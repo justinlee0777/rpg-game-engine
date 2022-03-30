@@ -23,11 +23,6 @@ export interface Character {
     readonly commands: Array<Command>;
 
     /**
-     * I don't like this.
-     */
-    readonly element: HTMLElement;
-
-    /**
      * The stats the character currently has.
      */
     current: Stats;
