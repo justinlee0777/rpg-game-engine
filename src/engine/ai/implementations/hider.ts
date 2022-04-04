@@ -1,7 +1,7 @@
-import { Action } from 'action-coordinator';
-import { Test } from 'characters/implementations';
-import { Attack } from 'commands/implementations';
-import { Puzzle } from 'puzzle';
+import { Action } from '../../action-coordinator';
+import { Test } from '../../characters/implementations';
+import { Attack } from '../../commands/implementations';
+import { Puzzle } from '../../puzzle';
 
 import { AI } from '../ai.interface';
 

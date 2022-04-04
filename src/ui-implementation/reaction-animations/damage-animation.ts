@@ -1,6 +1,5 @@
-import { Character } from 'characters';
-import { CharacterType } from 'characters/implementations';
-import { ReactionAnimation } from 'ui';
+import { Character, CharacterType, ReactionAnimation } from 'engine';
+
 
 import { CharacterSpriteMapInstance } from '../character-sprite-map-impl';
 

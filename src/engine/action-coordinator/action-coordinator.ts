@@ -1,6 +1,6 @@
-import { AI } from 'ai';
-import { Puzzle } from 'puzzle';
-import { AnimatorInstance } from 'ui-implementation/animator-impl';
+import { AI } from '../ai';
+import { Puzzle } from '../puzzle';
+import { UIImplementation } from '../ui';
 
 import { Action } from './action.interface';
 import { CommandCalculatorInstance } from './command-calculator';
@@ -10,6 +10,10 @@ import { Effect, EffectReaction } from './effect.interface';
  * Represents the "calculation" stage of the game loop. The game takes the user's inputs and determines the flow of action.
  */
 export class ActionCoordinator {
+
+    constructor(private uiImpl: UIImplementation) {
+
+    }
 
     /**
      * Given:
@@ -44,7 +48,7 @@ export class ActionCoordinator {
         }, []);
 
         for (const { action, effect, reaction } of turns) {
-            const { beforeEffect, runEffect, afterEffect } = AnimatorInstance.animateSkill(action.command.skillType, action.source);
+            const { beforeEffect, runEffect, afterEffect } = this.uiImpl.Animator.animateSkill(action.command.skillType, action.source);
 
             await beforeEffect();
             await Promise.all([
@@ -54,7 +58,7 @@ export class ActionCoordinator {
                 }),
                 runEffect(),
             ]);
-            await AnimatorInstance.animateReaction(effect, reaction, action.targets)();
+            await this.uiImpl.Animator.animateReaction(effect, reaction, action.targets)();
 
             await afterEffect();
         }

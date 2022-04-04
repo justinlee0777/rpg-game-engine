@@ -1,15 +1,15 @@
-import { listenForUserInput } from './ui-implementation/ui-input-impl';
-import { CharacterType, Hider } from './characters/implementations';
-import { Puzzle } from './puzzle';
-import { HiderAI } from './ai/implementations';
-import { ActionCoordinator } from './action-coordinator';
-import { SpriteHelperInstance } from './ui-implementation/sprite-helper-impl';
-import { CharacterSpriteMapInstance } from './ui-implementation/character-sprite-map-impl';
-import { SpriteDrawerInstance } from './ui-implementation/sprite-drawer-impl';
-import { Character } from './characters';
+import {
+    ActionCoordinator,
+    Character,
+    CharacterType,
+    Hider,
+    HiderAI,
+    Puzzle,
+} from './engine';
+import { UIImpl } from './ui-implementation';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const actionCoordinator = new ActionCoordinator();
+    const actionCoordinator = new ActionCoordinator(UIImpl);
     const enemyAi = new HiderAI();
 
     const players = [
@@ -20,19 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const setMap = (character: Character): HTMLElement => {
         const constructorFn = character.constructor as CharacterType;
 
-        const element = SpriteHelperInstance.get(constructorFn);
-        CharacterSpriteMapInstance.set(constructorFn, element);
+        const element = UIImpl.SpriteHelper.get(constructorFn);
+        UIImpl.CharacterSpriteMap.set(constructorFn, element);
         return element;
     }
 
     players.forEach(player => {
         const element = setMap(player);
-        SpriteDrawerInstance.draw(element, { player: true });
+        UIImpl.SpriteDrawer.draw(element, { player: true });
     });
 
     enemies.characters.forEach(enemy => {
         const element = setMap(enemy);
-        SpriteDrawerInstance.draw(element, { player: false });
+        UIImpl.SpriteDrawer.draw(element, { player: false });
     });
 
     const puzzle: Puzzle = {
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     (async function run(): Promise<void> {
         while (puzzle.victoryConditions.every(victoryCondition => !victoryCondition())) {
-            const actions = await listenForUserInput(players, enemyAi.characters);
+            const actions = await UIImpl.listenForUserInput(players, enemyAi.characters);
 
             await actionCoordinator.iterateGame(puzzle, actions, enemyAi);
         }

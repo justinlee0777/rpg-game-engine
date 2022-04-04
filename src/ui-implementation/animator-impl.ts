@@ -1,10 +1,6 @@
-import { Effect, EffectReaction } from 'action-coordinator';
-import { Character } from 'characters';
-import { SkillType } from 'commands/skills/skill-type';
-import { Animator } from 'ui';
-import { Animation, SkillAnimation } from 'ui/animations';
-import { damageAnimation } from './reaction-animations/damage-animation';
+import { Animation, Animator, Character, Effect, EffectReaction, SkillAnimation, SkillType } from 'engine';
 
+import { damageAnimation } from './reaction-animations/damage-animation';
 import { attackAnimation } from './skill-animations/attack-animation';
 
 export class AnimatorImpl implements Animator {
@@ -36,5 +32,3 @@ export class AnimatorImpl implements Animator {
         return () => Promise.resolve();
     }
 }
-
-export const AnimatorInstance = new AnimatorImpl();

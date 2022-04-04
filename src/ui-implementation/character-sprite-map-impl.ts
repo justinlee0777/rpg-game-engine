@@ -1,3 +1,3 @@
-import { CharacterType } from 'characters/implementations';
+import { CharacterType } from 'engine';
 
 export const CharacterSpriteMapInstance = new Map<CharacterType, HTMLElement>();

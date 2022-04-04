@@ -1,4 +1,4 @@
-import { CharacterConfig, SpriteDrawer } from 'ui';
+import { CharacterConfig, SpriteDrawer } from 'engine';
 
 export class SpriteDrawerImpl implements SpriteDrawer {
     private playerContainer: HTMLElement;
@@ -17,5 +17,3 @@ export class SpriteDrawerImpl implements SpriteDrawer {
         }
     }
 }
-
-export const SpriteDrawerInstance = new SpriteDrawerImpl();

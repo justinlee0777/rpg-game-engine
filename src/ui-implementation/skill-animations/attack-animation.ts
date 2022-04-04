@@ -1,7 +1,6 @@
-import { Character } from 'characters';
-import { CharacterType } from 'characters/implementations';
-import { SkillAnimation } from 'ui';
-import { CharacterSpriteMapInstance } from 'ui-implementation/character-sprite-map-impl';
+import { Character, CharacterType, SkillAnimation } from 'engine';
+
+import { CharacterSpriteMapInstance } from '../character-sprite-map-impl';
 
 export function attackAnimation(source: Character): SkillAnimation {
     return {

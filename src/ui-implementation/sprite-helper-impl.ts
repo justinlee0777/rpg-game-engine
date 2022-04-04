@@ -1,5 +1,4 @@
-import { CharacterType, Hider, Test } from 'characters/implementations';
-import { SpriteHelper } from 'ui';
+import { CharacterType, Hider, SpriteHelper, Test } from 'engine';
 
 export class SpriteHelperImpl implements SpriteHelper {
     get(type: CharacterType): HTMLElement {
@@ -12,5 +11,3 @@ export class SpriteHelperImpl implements SpriteHelper {
         }
     }
 }
-
-export const SpriteHelperInstance = new SpriteHelperImpl();

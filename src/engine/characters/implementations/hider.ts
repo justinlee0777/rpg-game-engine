@@ -1,5 +1,5 @@
-import { Command } from 'commands';
-import { Attack } from 'commands/implementations';
+import { Command } from '../../commands';
+import { Attack } from '../../commands/implementations';
 
 import { Character, Stats } from '../character.interface'
 

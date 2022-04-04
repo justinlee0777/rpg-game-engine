@@ -1,4 +1,5 @@
 import { Character } from 'characters';
+
 import { Action } from './action.interface';
 import { Effect, EffectReaction } from './effect.interface';
 
