@@ -1,6 +1,5 @@
-import { Action } from 'action-coordinator';
-import { AI } from 'ai';
-import { Character } from 'characters';
+import { Action } from '../../action-coordinator';
+import { Character } from '../../characters';
 
 /**
  * Function that listens for user's input and determines actions out of them.

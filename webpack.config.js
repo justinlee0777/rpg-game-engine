@@ -8,12 +8,12 @@ const config = {
     },
     resolve: {
         plugins: [new TsconfigPathsPlugin({})],
-        extensions: ['.ts'],
+        extensions: ['.ts', '.tsx'],
     },
     module: {
         rules: [
             {
-                test: /\.ts$/,
+                test: /\.tsx?$/,
                 use: [
                     {
                         loader: 'ts-loader',

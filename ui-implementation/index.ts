@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     const enemies = new HiderAI();
 
-    const setMap = (character: Character): HTMLElement => {
+    const setMap = (character: Character) => {
         const constructorFn = character.constructor as CharacterType;
 
         const element = UIImpl.SpriteHelper.get(constructorFn);

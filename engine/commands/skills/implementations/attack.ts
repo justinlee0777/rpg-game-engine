@@ -1,5 +1,3 @@
-import { AnimatorInstance } from 'ui-implementation/animator-impl';
-
 import { CommandType } from '../../command.interface';
 import { Priority } from '../../priority';
 import { SkillType } from '../skill-type';

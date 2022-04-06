@@ -1,6 +1,6 @@
-import { Effect, EffectReaction } from 'action-coordinator';
-import { Character } from 'characters';
-import { SkillType } from 'commands/skills/skill-type';
+import { Effect, EffectReaction } from '../../action-coordinator';
+import { Character } from '../../characters';
+import { SkillType } from '../../commands/skills/skill-type';
 
 import { ReactionAnimation } from './reaction-animation.interface';
 import { SkillAnimation } from './skill-animation.interface';

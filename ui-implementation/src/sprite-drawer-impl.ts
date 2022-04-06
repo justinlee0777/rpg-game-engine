@@ -1,19 +1,27 @@
 import { CharacterConfig, SpriteDrawer } from 'engine';
+import * as React from 'react';
+import { Root, createRoot } from 'react-dom/client';
 
-export class SpriteDrawerImpl implements SpriteDrawer {
-    private playerContainer: HTMLElement;
-    private enemyContainer: HTMLElement;
+import { Sprite } from './sprites/sprite';
+
+export class SpriteDrawerImpl implements SpriteDrawer<Sprite> {
+    private playerContainer: Root;
+    private enemyContainer: Root;
 
     constructor() {
-        this.playerContainer = document.getElementById('players');
-        this.enemyContainer = document.getElementById('enemies');
+        this.playerContainer = createRoot(
+            document.getElementById('players')
+        );
+        this.enemyContainer = createRoot(
+            document.getElementById('enemies')
+        );
     }
 
-    draw(element: HTMLElement, config: CharacterConfig): void {
+    draw(element: Sprite, config: CharacterConfig): void {
         if (config.player) {
-            this.playerContainer.appendChild(element);
+            this.playerContainer.render(element.jsxElement);
         } else {
-            this.enemyContainer.appendChild(element);
+            this.enemyContainer.render(element.jsxElement);
         }
     }
 }

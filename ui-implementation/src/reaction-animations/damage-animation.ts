@@ -7,7 +7,7 @@ export function damageAnimation(target: Character): ReactionAnimation {
     return () => {
         const element = CharacterSpriteMapInstance.get(target.constructor as CharacterType);
 
-        const animation = element.animate([
+        const animation = element.ref.current.animate([
             { filter: 'saturate(3)' },
             { filter: 'none' },
         ], 333);

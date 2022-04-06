@@ -1,5 +1,5 @@
-import { Character } from 'characters';
-import { Command } from 'commands';
+import { Character } from '../characters';
+import { Command } from '../commands';
 
 /**
  * Represents a user-inputted action.

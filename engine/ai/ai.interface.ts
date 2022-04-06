@@ -1,6 +1,6 @@
-import { Action } from 'action-coordinator';
-import { Character } from 'characters';
-import { Puzzle } from 'puzzle';
+import { Action } from '../action-coordinator';
+import { Character } from '../characters';
+import { Puzzle } from '../puzzle';
 
 /**
  * Represents a non-player party.

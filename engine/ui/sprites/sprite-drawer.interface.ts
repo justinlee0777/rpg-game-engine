@@ -9,6 +9,6 @@ export interface CharacterConfig {
 /**
  * Contract for drawing sprites onto the HTML page.
  */
-export interface SpriteDrawer {
-    draw(element: HTMLElement, config: CharacterConfig): void;
+export interface SpriteDrawer<T = HTMLElement> {
+    draw(element: T, config: CharacterConfig): void;
 }

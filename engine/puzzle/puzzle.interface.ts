@@ -1,5 +1,5 @@
-import { AI } from 'ai';
-import { Character } from 'characters';
+import { AI } from '../ai';
+import { Character } from '../characters';
 
 /**
  * Conditions for ending a specific puzzle.

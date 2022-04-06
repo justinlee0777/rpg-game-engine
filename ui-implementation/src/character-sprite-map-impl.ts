@@ -1,3 +1,5 @@
 import { CharacterType } from 'engine';
 
-export const CharacterSpriteMapInstance = new Map<CharacterType, HTMLElement>();
+import { Sprite } from './sprites/sprite';
+
+export const CharacterSpriteMapInstance = new Map<CharacterType, Sprite>();
