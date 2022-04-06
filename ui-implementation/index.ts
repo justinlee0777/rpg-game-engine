@@ -5,8 +5,9 @@ import {
     Hider,
     HiderAI,
     Puzzle,
-} from './engine';
-import { UIImpl } from './ui-implementation';
+} from 'engine';
+
+import { UIImpl } from './src';
 
 document.addEventListener('DOMContentLoaded', () => {
     const actionCoordinator = new ActionCoordinator(UIImpl);

@@ -2,15 +2,13 @@ const path = require("path");
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const config = {
-    entry: './src/index.ts',
+    entry: {
+        engine: './engine/index.ts',
+        main: './ui-implementation/index.ts',
+    },
     resolve: {
         plugins: [new TsconfigPathsPlugin({})],
         extensions: ['.ts'],
-        alias: {
-            characters: path.relative(__dirname, 'src/characters'),
-            commands: path.relative(__dirname, 'src/commands'),
-            puzzle: path.relative(__dirname, 'src/puzzle'),
-        },
     },
     module: {
         rules: [

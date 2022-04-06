@@ -3,7 +3,7 @@
  * This is to decouple the UI from the game logic.
  */
 
-import { CharacterType } from 'characters/implementations';
+import { CharacterType } from '../characters/implementations';
 
 import { Animator } from './animations';
 import { SpriteDrawer } from './sprites/sprite-drawer.interface';
