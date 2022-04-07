@@ -4,7 +4,10 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const config = {
     entry: {
         engine: './engine/index.ts',
-        main: './ui-implementation/index.ts',
+        main: {
+            dependOn: 'engine',
+            import: './ui-implementation/index.ts',
+        }
     },
     resolve: {
         plugins: [new TsconfigPathsPlugin({})],
