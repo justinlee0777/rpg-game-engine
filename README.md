@@ -2,9 +2,9 @@
 
 Environment: node@15.10.0, npm@7.5.3
 
-1. Load dependencies: `npm ci`
+1. Load dependencies: `npm run install`
 2. Build the package: `npm run build`
-3. Host the package through a web server.
+3. Host the `dist` package through a web server.
 
 ### Proposal
 
