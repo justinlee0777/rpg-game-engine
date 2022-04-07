@@ -7,7 +7,7 @@ export function attackAnimation(source: Character): SkillAnimation {
         beforeEffect: () => Promise.resolve(),
         runEffect: () => {
             const sprite = CharacterSpriteMapInstance.get(source.constructor as CharacterType);
-            const animation = sprite.ref.current.animate([
+            const animation = sprite.avatar.current.animate([
                 { transform: 'rotate(360deg)' },
             ], {
                 duration: 600,

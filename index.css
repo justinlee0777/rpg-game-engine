@@ -11,11 +11,12 @@ body {
     margin-top: auto;
 }
 
-#players, #enemies {
+#players,
+#enemies {
     text-align: center;
 }
 
-#players > *, #enemies > * {
+.avatar {
     height: 40px;
     width: 40px;
 }

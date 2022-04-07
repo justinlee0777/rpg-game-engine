@@ -1,5 +1,4 @@
 import { CharacterConfig, SpriteDrawer } from 'engine';
-import * as React from 'react';
 import { Root, createRoot } from 'react-dom/client';
 
 import { Sprite } from './sprites/sprite';

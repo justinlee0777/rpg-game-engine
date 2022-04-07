@@ -21,19 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const setMap = (character: Character) => {
         const constructorFn = character.constructor as CharacterType;
 
-        const element = UIImpl.SpriteHelper.get(constructorFn);
+        const element = UIImpl.SpriteHelper.get(character);
         UIImpl.CharacterSpriteMap.set(constructorFn, element);
         return element;
     }
 
     players.forEach(player => {
         const element = setMap(player);
-        UIImpl.SpriteDrawer.draw(element, { player: true });
+        UIImpl.SpriteDrawer.draw(element, { character: player, player: true });
     });
 
     enemies.characters.forEach(enemy => {
         const element = setMap(enemy);
-        UIImpl.SpriteDrawer.draw(element, { player: false });
+        UIImpl.SpriteDrawer.draw(element, { character: enemy, player: false });
     });
 
     const puzzle: Puzzle = {

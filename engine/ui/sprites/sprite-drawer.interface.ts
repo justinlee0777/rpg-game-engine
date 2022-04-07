@@ -1,7 +1,11 @@
+import { Character } from '../../characters';
+
 /**
  * Configuration for how the sprite should be drawn.
  */
 export interface CharacterConfig {
+    /** Character metadata. */
+    character: Character;
     /** Whether the character belongs to the player's party. */
     player: boolean;
 }

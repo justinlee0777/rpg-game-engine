@@ -1,16 +1,22 @@
+import { Character } from 'engine';
 import * as React from 'react';
+
 import { Sprite } from './sprite';
 
-export class HiderSprite extends Sprite {
+export class HiderSprite implements Sprite {
     jsxElement: React.ReactElement;
-    ref: React.RefObject<any>;
+    avatar: React.RefObject<HTMLImageElement>;
+    hitpoints: React.RefObject<HTMLElement>;
 
-    constructor() {
-        super();
+    constructor(character: Character) {
         const src = 'https://th.bing.com/th/id/OIP.Tg20QY9WPX17amOdL1LMnAHaHa?pid=ImgDet&rs=1';
 
-        this.ref = React.createRef();
+        this.avatar = React.createRef();
+        this.hitpoints = React.createRef();
 
-        this.jsxElement = <img ref={this.ref} src={src} />;
+        this.jsxElement = <div className='character'>
+            <img className="avatar" ref={this.avatar} src={src} />
+            <span ref={this.hitpoints}>{character.current.health}</span>
+        </div>;
     }
 }
