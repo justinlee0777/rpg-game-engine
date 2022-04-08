@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Engine for a hypothetical RPG game.",
   "scripts": {
-    "install-deps": "npm ci && npm --prefix ./packages/ui-implementation ci",
+    "install-deps": "npm ci && npm --prefix ./packages/engine ci && npm --prefix ./packages/ui-implementation ci",
     "build": "webpack --mode=production",
     "build:dev": "tsc && webpack --mode=development"
   },

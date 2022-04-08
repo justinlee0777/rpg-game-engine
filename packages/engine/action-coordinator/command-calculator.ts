@@ -14,7 +14,7 @@ export class CommandCalculator {
     calculateEffect(action: Action): Effect {
         const { command, targets } = action;
 
-        const damaging = command.damage !== 0;
+        const damaging = !!command.damage;
 
         return {
             damaging,

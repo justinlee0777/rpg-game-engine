@@ -9,10 +9,8 @@ import {
 
 import { UIImpl } from './src';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const actionCoordinator = new ActionCoordinator(UIImpl);
-    const enemyAi = new HiderAI();
-
     const players = [
         new Hider(),
     ];
@@ -40,20 +38,23 @@ document.addEventListener('DOMContentLoaded', () => {
         players,
         enemies,
         victoryConditions: [
-            () => enemies.characters.every(e => e.current.health <= 0),
+            enemyCharacters => enemyCharacters.every(e => e.current.health <= 0),
         ],
         loseConditions: [
-            () => players.every(p => p.current.health <= 0),
+            playerCharacters => playerCharacters.every(p => p.current.health <= 0),
         ],
     };
 
-    (async function run(): Promise<void> {
-        while (puzzle.victoryConditions.every(victoryCondition => !victoryCondition())) {
-            const actions = await UIImpl.listenForUserInput(players, enemyAi.characters);
+    const gameEnd = () => {
+        const win = puzzle.victoryConditions.some(victoryCondition => victoryCondition(enemies.characters));
+        const lose = puzzle.loseConditions.some(loseCondition => loseCondition(players));
 
-            await actionCoordinator.iterateGame(puzzle, actions, enemyAi);
-        }
+        return win || lose;
+    };
 
-        return Promise.resolve();
-    })();
+    while (!gameEnd()) {
+        const actions = await UIImpl.listenForUserInput(players, enemies.characters);
+
+        await actionCoordinator.iterateGame(puzzle, actions, enemies);
+    }
 }, { once: true });

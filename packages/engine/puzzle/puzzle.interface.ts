@@ -6,7 +6,7 @@ import { Character } from '../characters';
  * Takes no arguments and assumes they are initialized at the same time the puzzle is, to keep them flexible.
  */
 export interface EndCondition {
-    (): boolean;
+    (characters: Array<Character>): boolean;
 }
 
 /**

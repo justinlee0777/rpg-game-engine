@@ -1,3 +1,6 @@
+import { Character } from '../characters';
+import { Puzzle } from '../puzzle';
+
 /**
  * Effect of an action. Used only to get reactions from a character.
  */

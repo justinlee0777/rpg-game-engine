@@ -1,10 +1,22 @@
 import { AI } from '../ai';
-import { Puzzle } from '../puzzle';
+import { Character } from '../characters';
+import { CharacterType } from '../characters/implementations';
+import { EndCondition, Puzzle } from '../puzzle';
 import { UIImplementation } from '../ui';
 
 import { Action } from './action.interface';
 import { CommandCalculatorInstance } from './command-calculator';
 import { Effect, EffectReaction } from './effect.interface';
+
+interface CharacterSpecificAction extends Action {
+    player: boolean;
+}
+
+interface Turn {
+    action: CharacterSpecificAction;
+    effect: Effect;
+    reaction: EffectReaction;
+}
 
 /**
  * Represents the "calculation" stage of the game loop. The game takes the user's inputs and determines the flow of action.
@@ -12,7 +24,6 @@ import { Effect, EffectReaction } from './effect.interface';
 export class ActionCoordinator {
 
     constructor(private uiImpl: UIImplementation) {
-
     }
 
     /**
@@ -27,25 +38,23 @@ export class ActionCoordinator {
      * 5. Run.
      */
     async iterateGame(puzzle: Puzzle, playerActions: Array<Action>, enemyAi: AI): Promise<Puzzle> {
-        playerActions = this.order(playerActions);
         const enemyActions = enemyAi.getActions(puzzle);
 
         // Order the player and the enemy's actions.
-        const actions: Array<Action> = this.order([...playerActions, ...enemyActions]);
+        const actions: Array<CharacterSpecificAction> = this.order(
+            [
+                ...playerActions.map(action => ({ ...action, player: true })),
+                ...enemyActions.map(action => ({ ...action, player: false })),
+            ]
+        );
+
         // Calculate their reactions to actions against them.
-        interface Turn {
-            action: Action;
-            effect: Effect;
-            reaction: EffectReaction;
-        }
-        const turns = actions.reduce<Array<Turn>>((arr, action) => {
+        const turns: Array<Turn> = actions.map(action => {
             const effect = CommandCalculatorInstance.calculateEffect(action);
             const reaction = CommandCalculatorInstance.calculateReaction(effect, action.targets);
 
-            const turn = { action, effect, reaction };
-
-            return arr.concat(turn);
-        }, []);
+            return { action, effect, reaction };
+        });
 
         for (const { action, effect, reaction } of turns) {
             const { beforeEffect, runEffect, afterEffect } = this.uiImpl.Animator.animateSkill(action.command.skillType, action.source);
@@ -61,6 +70,10 @@ export class ActionCoordinator {
             await this.uiImpl.Animator.animateReaction(effect, reaction, action.targets)();
 
             await afterEffect();
+
+            if (this.isDecisiveTurn(puzzle)) {
+                break;
+            }
         }
 
         return Promise.resolve(puzzle);
@@ -69,9 +82,16 @@ export class ActionCoordinator {
     /**
      * @returns the actions by priority.
      */
-    private order(actions: Array<Action>): Array<Action> {
+    private order(actions: Array<CharacterSpecificAction>): Array<CharacterSpecificAction> {
         return actions.sort((a, b) => {
             return b.command.priority - a.command.priority;
         });
+    }
+
+    private isDecisiveTurn(puzzle: Puzzle): boolean {
+        return (
+            puzzle.victoryConditions.some(condition => condition(puzzle.enemies.characters))
+            || puzzle.loseConditions.some(condition => condition(puzzle.players))
+        );
     }
 }
