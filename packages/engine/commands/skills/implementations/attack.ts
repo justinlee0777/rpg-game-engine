@@ -14,6 +14,8 @@ export class Attack implements Skill {
 
     damage = 5;
 
+    stamina = 5;
+
     priority = Priority.EAGER;
 
 

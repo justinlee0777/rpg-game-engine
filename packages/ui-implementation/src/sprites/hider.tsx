@@ -12,6 +12,8 @@ export class HiderSprite extends React.Component<Sprite> implements Sprite {
 
     hitpoints: React.RefObject<HTMLElement>;
 
+    stamina: React.RefObject<HTMLElement>;
+
     resolve: () => void;
 
     constructor(props: Sprite) {
@@ -21,6 +23,7 @@ export class HiderSprite extends React.Component<Sprite> implements Sprite {
         this.doneDrawing = props.doneDrawing;
         this.avatar = props.avatar;
         this.hitpoints = props.hitpoints
+        this.stamina = props.stamina;
         this.resolve = props.resolve;
     }
 
@@ -33,7 +36,8 @@ export class HiderSprite extends React.Component<Sprite> implements Sprite {
 
         return <div className='character'>
             <img className="avatar" ref={this.avatar as any} src={src} />
-            <span ref={this.hitpoints}>{this.character.current.health}</span>
+            <span className='health' ref={this.hitpoints}>{this.character.current.health}</span>
+            <span className='stamina' ref={this.stamina}>{this.character.current.stamina}</span>
         </div>;
     }
 }

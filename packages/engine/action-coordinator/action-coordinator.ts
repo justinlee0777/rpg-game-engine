@@ -1,7 +1,7 @@
 import { AI } from '../ai';
 import { Character } from '../characters';
 import { CharacterType } from '../characters/implementations';
-import { EndCondition, Puzzle } from '../puzzle';
+import { Puzzle } from '../puzzle';
 import { UIImplementation } from '../ui';
 
 import { Action } from './action.interface';
@@ -59,6 +59,8 @@ export class ActionCoordinator {
         for (const { action, effect, reaction } of turns) {
             const { beforeEffect, runEffect, afterEffect } = this.uiImpl.Animator.animateSkill(action.command.skillType, action.source);
 
+            CommandCalculatorInstance.executeAction(action);
+
             await beforeEffect();
             await Promise.all([
                 new Promise(resolve => {
@@ -75,6 +77,8 @@ export class ActionCoordinator {
                 break;
             }
         }
+
+        await this.regenerateStamina(puzzle);
 
         return Promise.resolve(puzzle);
     }
@@ -93,5 +97,21 @@ export class ActionCoordinator {
             puzzle.victoryConditions.some(condition => condition(puzzle.enemies.characters))
             || puzzle.loseConditions.some(condition => condition(puzzle.players))
         );
+    }
+
+    /**
+     * Regenerate characters' stamina at the end of the turn.
+     */
+    private regenerateStamina(puzzle: Puzzle): Promise<void> {
+        return Promise.all([
+            ...[...puzzle.players, ...puzzle.enemies.characters].map(character => {
+                const { stamina, staminaRegen } = character.current;
+                const newStamina = Math.min(stamina + staminaRegen, character.initial.stamina);
+
+                character.current.stamina = newStamina;
+
+                return this.uiImpl.Animator.animateStaminaRegen(character, newStamina)();
+            }),
+        ]).then(() => undefined);
     }
 }

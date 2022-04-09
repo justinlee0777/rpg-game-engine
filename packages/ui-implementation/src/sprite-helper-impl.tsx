@@ -18,6 +18,7 @@ export class SpriteHelperImpl implements SpriteHelper<SpriteElement> {
                     character,
                     avatar: React.createRef(),
                     hitpoints: React.createRef(),
+                    stamina: React.createRef(),
                 };
 
                 return {

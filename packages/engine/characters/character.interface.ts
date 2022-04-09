@@ -6,6 +6,10 @@ import { Command } from '../commands';
 export interface Stats {
     /** Points before the character is unconscious/defeated. */
     health: number;
+    /** Points used to determine the priority/stagger of skills. */
+    stamina: number;
+    /** Stamina regenerated at the beginning of the input phase. */
+    staminaRegen: number;
 }
 
 /**

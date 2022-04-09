@@ -4,7 +4,11 @@ import { CharacterSpriteMapInstance } from '../character-sprite-map-impl';
 
 export function attackAnimation(source: Character): SkillAnimation {
     return {
-        beforeEffect: () => Promise.resolve(),
+        beforeEffect: () => {
+            const sprite = CharacterSpriteMapInstance.get(source.constructor as CharacterType);
+            sprite.stamina.current.textContent = source.current.stamina.toString();
+            return Promise.resolve();
+        },
         runEffect: () => {
             const sprite = CharacterSpriteMapInstance.get(source.constructor as CharacterType);
             const animation = sprite.avatar.current.animate([

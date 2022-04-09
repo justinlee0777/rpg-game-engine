@@ -12,6 +12,8 @@ export class Hider implements Character {
     constructor() {
         this.initial = {
             health: 50,
+            stamina: 50,
+            staminaRegen: 1,
         };
         this.current = { ...this.initial };
         this.commands = [new Attack()];

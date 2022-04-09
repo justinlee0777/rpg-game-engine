@@ -9,6 +9,9 @@ export interface BaseCommand {
      * All commands need priority for the game engine to create the flow of action.
      */
     priority: Priority;
+
+    /** Stamina usage for command. */
+    stamina: number;
 }
 
 /**

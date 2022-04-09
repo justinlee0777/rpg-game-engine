@@ -8,6 +8,16 @@ import { Effect, EffectReaction } from './effect.interface';
  */
 export class CommandCalculator {
     /**
+     * Calculates and executes the effects of an action solely on the source itself.
+     * For now, simply removes stamina costs.
+     */
+    executeAction({ command, source }: Action): void {
+        source.forEach(character => {
+            character.current.stamina -= command.stamina;
+        });
+    }
+
+    /**
      * Calculate the effects of commands.
      * @returns a configuration object for animators and characters to use
      */

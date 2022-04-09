@@ -15,6 +15,8 @@ export interface Sprite {
     avatar: RefObject<HTMLElement>;
     /** Graphical representation of hitpoints. */
     hitpoints: RefObject<HTMLElement>;
+    /** Graphical representation of stamina. */
+    stamina: RefObject<HTMLElement>;
 
     /** Resolve function for the 'doneDrawing' promise. */
     resolve(): void;

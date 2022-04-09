@@ -1,4 +1,5 @@
-import { Animation, Animator, Character, Effect, EffectReaction, SkillAnimation, SkillType } from 'engine';
+import { Animation, Animator, Character, CharacterType, Effect, EffectReaction, SkillAnimation, SkillType } from 'engine';
+import { CharacterSpriteMapInstance } from './character-sprite-map-impl';
 
 import { damageAnimation } from './reaction-animations/damage-animation';
 import { attackAnimation } from './skill-animations/attack-animation';
@@ -30,5 +31,13 @@ export class AnimatorImpl implements Animator {
             ]).then();
         }
         return () => Promise.resolve();
+    }
+
+    animateStaminaRegen(character: Character, newStamina: number): Animation {
+        const sprite = CharacterSpriteMapInstance.get(character.constructor as CharacterType);
+        return () => {
+            sprite.stamina.current.textContent = newStamina.toString();
+            return Promise.resolve();
+        };
     }
 }
