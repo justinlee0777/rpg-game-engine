@@ -1,12 +1,23 @@
 import { Action, Attack, Character, ListenForUserInput } from 'engine';
 
-const userInput: HTMLElement = document.getElementById('user-input');
+import { environment } from '../environment';
 
 export function listenForUserInputFactory(): ListenForUserInput {
-    return async function listenForUserInput(players: Array<Character>, enemies: Array<Character>) {
-        userInput.style.opacity = '1';
+    const userInput: HTMLElement = document.getElementById('user-input');
+    let createAction: (players: Array<Character>, enemies: Array<Character>) => Promise<Array<Action>>;
 
-        return new Promise<Array<Action>>(resolve => {
+    if (environment.skipUserInput) {
+        userInput.style.opacity = '0'
+        createAction = (players, enemies) => Promise.resolve([
+            {
+                command: new Attack(),
+                source: [players[0]],
+                targets: [enemies[0]],
+            },
+        ]);
+    } else {
+        createAction = (players, enemies) => new Promise<Array<Action>>(resolve => {
+            userInput.style.opacity = '1';
             userInput.addEventListener('click', () => {
                 const actions = [
                     {
@@ -18,6 +29,10 @@ export function listenForUserInputFactory(): ListenForUserInput {
                 resolve(actions);
             }, { once: true });
         })
-            .finally(() => userInput.style.opacity = '0');
+            .finally(() => userInput.style.opacity = '0')
+    }
+
+    return async function listenForUserInput(players: Array<Character>, enemies: Array<Character>) {
+        return createAction(players, enemies);
     };
 }

@@ -3,20 +3,37 @@ import * as React from 'react';
 
 import { Sprite } from './sprite';
 
-export class HiderSprite implements Sprite {
-    jsxElement: React.ReactElement;
-    avatar: React.RefObject<HTMLImageElement>;
+export class HiderSprite extends React.Component<Sprite> implements Sprite {
+    character: Character;
+
+    doneDrawing: Promise<void>;
+
+    avatar: React.RefObject<HTMLElement>;
+
     hitpoints: React.RefObject<HTMLElement>;
 
-    constructor(character: Character) {
+    resolve: () => void;
+
+    constructor(props: Sprite) {
+        super(props);
+
+        this.character = props.character;
+        this.doneDrawing = props.doneDrawing;
+        this.avatar = props.avatar;
+        this.hitpoints = props.hitpoints
+        this.resolve = props.resolve;
+    }
+
+    componentDidMount() {
+        this.resolve();
+    }
+
+    render() {
         const src = 'https://th.bing.com/th/id/OIP.Tg20QY9WPX17amOdL1LMnAHaHa?pid=ImgDet&rs=1';
 
-        this.avatar = React.createRef();
-        this.hitpoints = React.createRef();
-
-        this.jsxElement = <div className='character'>
-            <img className="avatar" ref={this.avatar} src={src} />
-            <span ref={this.hitpoints}>{character.current.health}</span>
+        return <div className='character'>
+            <img className="avatar" ref={this.avatar as any} src={src} />
+            <span ref={this.hitpoints}>{this.character.current.health}</span>
         </div>;
     }
 }

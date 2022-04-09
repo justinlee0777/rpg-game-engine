@@ -8,19 +8,25 @@ import {
 } from 'engine';
 
 import { UIImpl } from './src';
+import { Sprite } from './src/sprites/sprite';
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const actionCoordinator = new ActionCoordinator(UIImpl);
     const players = [
         new Hider(),
     ];
     const enemies = new HiderAI();
 
+    const allSprites: Array<Sprite> = [];
+
     const setMap = (character: Character) => {
         const constructorFn = character.constructor as CharacterType;
 
         const element = UIImpl.SpriteHelper.get(character);
-        UIImpl.CharacterSpriteMap.set(constructorFn, element);
+        UIImpl.CharacterSpriteMap.set(constructorFn, element.sprite);
+
+        allSprites.push(element.sprite);
+
         return element;
     }
 
@@ -52,9 +58,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         return win || lose;
     };
 
-    while (!gameEnd()) {
-        const actions = await UIImpl.listenForUserInput(players, enemies.characters);
+    Promise.all([
+        ...allSprites.map(sprite => sprite.doneDrawing)
+    ]).then(async () => {
+        while (!gameEnd()) {
+            const actions = await UIImpl.listenForUserInput(players, enemies.characters);
 
-        await actionCoordinator.iterateGame(puzzle, actions, enemies);
-    }
+            await actionCoordinator.iterateGame(puzzle, actions, enemies);
+        }
+    });
 }, { once: true });
