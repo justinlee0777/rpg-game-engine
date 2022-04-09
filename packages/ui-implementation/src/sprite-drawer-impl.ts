@@ -1,9 +1,9 @@
 import { CharacterConfig, SpriteDrawer } from 'engine';
 import { Root, createRoot } from 'react-dom/client';
 
-import { Sprite } from './sprites/sprite';
+import { SpriteElement } from './sprites/sprite';
 
-export class SpriteDrawerImpl implements SpriteDrawer<Sprite> {
+export class SpriteDrawerImpl implements SpriteDrawer<SpriteElement> {
     private playerContainer: Root;
     private enemyContainer: Root;
 
@@ -16,11 +16,11 @@ export class SpriteDrawerImpl implements SpriteDrawer<Sprite> {
         );
     }
 
-    draw(element: Sprite, config: CharacterConfig): void {
+    draw(element: SpriteElement, config: CharacterConfig): void {
         if (config.player) {
-            this.playerContainer.render(element.jsxElement);
+            this.playerContainer.render(element.reactElement);
         } else {
-            this.enemyContainer.render(element.jsxElement);
+            this.enemyContainer.render(element.reactElement);
         }
     }
 }
