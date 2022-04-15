@@ -7,9 +7,6 @@ import { Skill } from '../skill.interface';
  * TODO
  */
 export class FastestAttack implements Skill {
-    displayName = 'Fastest Attack';
-    description = 'A basic fastest attack.';
-
     damage = 5;
 
     stamina = 15;

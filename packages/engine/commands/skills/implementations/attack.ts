@@ -10,9 +10,6 @@ import { Skill } from '../skill.interface';
  * it seems counter to the design of the game.
  */
 export class Attack implements Skill {
-    displayName = 'Attack';
-    description = 'A basic attack.';
-
     damage = 5;
 
     stamina = 5;
