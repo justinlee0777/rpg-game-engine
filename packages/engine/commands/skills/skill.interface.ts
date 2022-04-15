@@ -6,10 +6,12 @@ import { SkillType } from './skill-type';
  */
 export interface Skill extends BaseCommand {
     /**
+     * TODO This seems this should be decoupled from the engine.
      * What to display to the user.
      */
     displayName: string;
     /**
+     * TODO This seems this should be decoupled from the engine.
      * Description of the skill to display to the user.
      */
     description: string;

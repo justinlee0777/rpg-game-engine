@@ -13,7 +13,7 @@ export class CommandCalculator {
      */
     executeAction({ command, source }: Action): void {
         source.forEach(character => {
-            character.current.stamina -= command.stamina;
+            character.current.stamina = Math.max(character.current.stamina - command.stamina, 0);
         });
     }
 

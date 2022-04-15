@@ -4,6 +4,8 @@
  * with enemies resolved last.
  */
 export enum Priority {
+    /** Not to be assigned to any commands; used internally. @see {@link PriorityCalculator} */
+    DEAD_LAST,
     SLOW,
     DELIBERATIVE,
     EAGER,

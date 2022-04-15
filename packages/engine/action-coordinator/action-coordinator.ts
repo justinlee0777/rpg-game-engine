@@ -7,6 +7,7 @@ import { UIImplementation } from '../ui';
 import { Action } from './action.interface';
 import { CommandCalculatorInstance } from './command-calculator';
 import { Effect, EffectReaction } from './effect.interface';
+import { PriorityCalculatorInstance } from './priority-calculator';
 
 interface CharacterSpecificAction extends Action {
     player: boolean;
@@ -41,7 +42,7 @@ export class ActionCoordinator {
         const enemyActions = enemyAi.getActions(puzzle);
 
         // Order the player and the enemy's actions.
-        const actions: Array<CharacterSpecificAction> = this.order(
+        const actions: Array<CharacterSpecificAction> = PriorityCalculatorInstance.order(
             [
                 ...playerActions.map(action => ({ ...action, player: true })),
                 ...enemyActions.map(action => ({ ...action, player: false })),
@@ -81,15 +82,6 @@ export class ActionCoordinator {
         await this.regenerateStamina(puzzle);
 
         return Promise.resolve(puzzle);
-    }
-
-    /**
-     * @returns the actions by priority.
-     */
-    private order(actions: Array<CharacterSpecificAction>): Array<CharacterSpecificAction> {
-        return actions.sort((a, b) => {
-            return b.command.priority - a.command.priority;
-        });
     }
 
     private isDecisiveTurn(puzzle: Puzzle): boolean {

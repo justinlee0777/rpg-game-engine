@@ -1,9 +1,11 @@
-import { Action, Attack, Character, ListenForUserInput } from 'engine';
+import { Action, Attack, Character, Command, ListenForUserInput } from 'engine';
+import { FasterAttack } from 'packages/engine/commands/skills/implementations/faster-attack';
+import { FastestAttack } from 'packages/engine/commands/skills/implementations/fastest-attack';
 
 import { environment } from '../environment';
 
 export function listenForUserInputFactory(): ListenForUserInput {
-    const userInput: HTMLElement = document.getElementById('user-input');
+    const userInput: HTMLElement = document.getElementById('attacks');
     let createAction: (players: Array<Character>, enemies: Array<Character>) => Promise<Array<Action>>;
 
     if (environment.skipUserInput) {
@@ -18,10 +20,24 @@ export function listenForUserInputFactory(): ListenForUserInput {
     } else {
         createAction = (players, enemies) => new Promise<Array<Action>>(resolve => {
             userInput.style.opacity = '1';
-            userInput.addEventListener('click', () => {
+            userInput.addEventListener('click', event => {
+                const button = event.target as HTMLElement;
+
+                let command: Command;
+
+                switch (button.id) {
+                    case 'attack':
+                        command = new Attack();
+                        break;
+                    case 'faster-attack':
+                        command = new FasterAttack();
+                    case 'fastest-attack':
+                        command = new FastestAttack();
+                }
+
                 const actions = [
                     {
-                        command: new Attack(),
+                        command,
                         source: [players[0]],
                         targets: [enemies[0]],
                     },

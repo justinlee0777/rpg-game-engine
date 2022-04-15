@@ -4,6 +4,7 @@ import { SkillType } from '../skill-type';
 import { Skill } from '../skill.interface';
 
 /**
+ * TODO
  * A basic attack that every character possesses.
  * This is for prototype purposes. The more I think about it, the more
  * it seems counter to the design of the game.

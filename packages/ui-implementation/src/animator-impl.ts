@@ -14,6 +14,8 @@ export class AnimatorImpl implements Animator {
     animateSkill(type: SkillType, sources: Array<Character>): SkillAnimation {
         switch (type) {
             case SkillType.ATTACK:
+            case SkillType.FASTER_ATTACK:
+            case SkillType.FASTEST_ATTACK:
                 return attackAnimation(sources[0]);
             default:
                 return this.defaultAnimation;
