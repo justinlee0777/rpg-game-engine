@@ -1,4 +1,8 @@
+import { cloneDeep } from 'lodash-es';
+
 import { Character } from '../characters';
+import { Command } from '../commands';
+import { isHiding } from '../ongoing-effects/implementations';
 
 import { Action } from './action.interface';
 import { Effect, EffectReaction } from './effect.interface';
@@ -25,12 +29,22 @@ export class CommandCalculator {
         const { command, targets } = action;
 
         const damaging = !!command.damage;
+        const hiding = isHiding(command);
 
         return {
             damaging,
+            hiding,
             execute: () => {
+                if (command.ongoingEffects) {
+                    targets.forEach(target => {
+                        this.applyOngoingEffect(target, command);
+                    });
+                }
+
                 if (damaging) {
-                    targets.forEach(target => target.current.health -= command.damage);
+                    targets.forEach(target => {
+                        this.calculateDamage(target, command);
+                    });
                 }
             },
         };
@@ -42,6 +56,22 @@ export class CommandCalculator {
     calculateReaction(effect: Effect, targets: Array<Character>): EffectReaction {
         // For now, foiling is not implemented as there is no character that can foil.
         return { source: effect };
+    }
+
+    private applyOngoingEffect(target: Character, command: Command): void {
+        let { ongoingEffects = [] } = target.current;
+
+        ongoingEffects = ongoingEffects.map(ongoingEffect => cloneDeep(ongoingEffect));
+
+        target.current.ongoingEffects = [...ongoingEffects, ...command.ongoingEffects];
+    }
+
+    private calculateDamage(target: Character, command: Command): void {
+        if (isHiding(target)) {
+            return;
+        } else {
+            target.current.health -= command.damage;
+        }
     }
 }
 

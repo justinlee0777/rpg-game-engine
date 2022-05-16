@@ -1,6 +1,6 @@
 import { AI } from '../ai';
 import { Character } from '../characters';
-import { CharacterType } from '../characters/implementations';
+import { OngoingEffect } from '../ongoing-effects';
 import { Puzzle } from '../puzzle';
 import { UIImplementation } from '../ui';
 
@@ -81,6 +81,9 @@ export class ActionCoordinator {
 
         await this.regenerateStamina(puzzle);
 
+        // TODO for now only end-of-turn effects are implemented as there is no distinguishing flags yet
+        await this.resolveOngoingEffectsEndOfTurn([...puzzle.players, ...puzzle.enemies.characters]);
+
         return Promise.resolve(puzzle);
     }
 
@@ -105,5 +108,30 @@ export class ActionCoordinator {
                 return this.uiImpl.Animator.animateStaminaRegen(character, newStamina)();
             }),
         ]).then(() => undefined);
+    }
+
+    private resolveOngoingEffectsEndOfTurn(characters: Array<Character>): Promise<void> {
+        const animations = characters.map(character => {
+            const ongoingEffects: Array<OngoingEffect> = [];
+            const removedEffects: Array<OngoingEffect> = [];
+
+            character.current.ongoingEffects?.forEach(ongoingEffect => {
+                ongoingEffect.turnDuration -= 1;
+
+                if (ongoingEffect.turnDuration > 0) {
+                    ongoingEffects.push(ongoingEffect);
+                } else {
+                    removedEffects.push(ongoingEffect);
+                }
+            });
+
+            character.current.ongoingEffects = ongoingEffects;
+
+            return this.uiImpl.Animator.animateStatusEffectRemoval(character, removedEffects);
+        });
+
+        return Promise.all(
+            animations.map(animation => animation())
+        ).then();
     }
 }

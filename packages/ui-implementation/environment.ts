@@ -3,5 +3,5 @@
  */
 export const environment = {
     /** If true, skips user input and uses AI behavior for the user's characters. */
-    skipUserInput: true,
+    skipUserInput: false,
 };

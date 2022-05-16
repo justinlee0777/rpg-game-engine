@@ -8,4 +8,6 @@ export enum SkillType {
     FASTER_ATTACK = 'FasterAttack',
     /** TODO Prototype */
     FASTEST_ATTACK = 'FastestAttack',
+
+    HIDE = 'Hide',
 }

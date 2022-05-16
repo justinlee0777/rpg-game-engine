@@ -1,8 +1,9 @@
-import { Animation, Animator, Character, CharacterType, Effect, EffectReaction, SkillAnimation, SkillType } from 'engine';
+import { Animation, Animator, Character, CharacterType, Effect, EffectReaction, isHiding, OngoingEffect, OngoingEffectType, SkillAnimation, SkillType } from 'engine';
 import { CharacterSpriteMapInstance } from './character-sprite-map-impl';
 
 import { damageAnimation } from './reaction-animations/damage-animation';
 import { attackAnimation } from './skill-animations/attack-animation';
+import { hideAnimation } from './ongoing-effect-animations/hide-animation';
 
 export class AnimatorImpl implements Animator {
     private readonly defaultAnimation: SkillAnimation = {
@@ -29,7 +30,17 @@ export class AnimatorImpl implements Animator {
 
         if (effect.damaging) {
             return () => Promise.all([
-                ...targets.map(target => damageAnimation(target)()),
+                ...targets.map(target => {
+                    if (isHiding(target)) {
+                        return Promise.resolve();
+                    } else {
+                        return damageAnimation(target)();
+                    }
+                }),
+            ]).then();
+        } else if (effect.hiding) {
+            return () => Promise.all([
+                ...targets.map(target => hideAnimation.applied(target)()),
             ]).then();
         }
         return () => Promise.resolve();
@@ -41,5 +52,20 @@ export class AnimatorImpl implements Animator {
             sprite.stamina.current.textContent = newStamina.toString();
             return Promise.resolve();
         };
+    }
+
+    animateStatusEffectRemoval(character: Character, removedEffects: Array<OngoingEffect>): Animation {
+        const animations: Array<Animation> = removedEffects.map(ongoingEffect => {
+            switch (ongoingEffect.type) {
+                case OngoingEffectType.HIDE:
+                    return hideAnimation.removed(character);
+                default:
+                    return () => Promise.resolve();
+            }
+        });
+
+        return () => Promise.all([
+            ...animations.map(animation => animation()),
+        ]).then();
     }
 }

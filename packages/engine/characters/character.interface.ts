@@ -1,4 +1,5 @@
 import { Command } from '../commands';
+import { OngoingEffect } from '../ongoing-effects';
 
 /**
  * Character's metadata.
@@ -10,6 +11,8 @@ export interface Stats {
     stamina: number;
     /** Stamina regenerated at the beginning of the input phase. */
     staminaRegen: number;
+    /** Ongoing effects. */
+    ongoingEffects?: Array<OngoingEffect>;
 }
 
 /**

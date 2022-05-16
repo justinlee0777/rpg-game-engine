@@ -1,3 +1,4 @@
+import { OngoingEffect } from 'packages/engine/ongoing-effects';
 import { Effect, EffectReaction } from '../../action-coordinator';
 import { Character } from '../../characters';
 import { SkillType } from '../../commands/skills/skill-type';
@@ -24,4 +25,9 @@ export interface Animator {
      * @returns the animation when characters regenerate stamina at the end of the turn.
      */
     animateStaminaRegen(character: Character, newStamina: number): Animation;
+
+    /**
+     * @returns an animation when ongoing effects are removed from characters.
+     */
+    animateStatusEffectRemoval(character: Character, removedEffects: Array<OngoingEffect>): Animation;
 }

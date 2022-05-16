@@ -1,6 +1,7 @@
 import { Action, Attack, Character, Command, ListenForUserInput } from 'engine';
 import { FasterAttack } from 'packages/engine/commands/skills/implementations/faster-attack';
 import { FastestAttack } from 'packages/engine/commands/skills/implementations/fastest-attack';
+import { Hide } from 'packages/engine/commands/skills/implementations/hide';
 
 import { environment } from '../environment';
 
@@ -24,22 +25,32 @@ export function listenForUserInputFactory(): ListenForUserInput {
                 const button = event.target as HTMLElement;
 
                 let command: Command;
+                let targets: Array<Character>;
 
                 switch (button.id) {
                     case 'attack':
                         command = new Attack();
+                        targets = [enemies[0]];
                         break;
                     case 'faster-attack':
                         command = new FasterAttack();
+                        targets = [enemies[0]];
+                        break;
                     case 'fastest-attack':
                         command = new FastestAttack();
+                        targets = [enemies[0]];
+                        break;
+                    case 'hide':
+                        command = new Hide();
+                        targets = [players[0]];
+                        break;
                 }
 
                 const actions = [
                     {
                         command,
                         source: [players[0]],
-                        targets: [enemies[0]],
+                        targets,
                     },
                 ];
                 resolve(actions);

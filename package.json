@@ -11,6 +11,11 @@
     "type": "git",
     "url": "rpg-game-engine"
   },
+  "private": true,
+  "workspaces": [
+    "packages/engine",
+    "packages/ui-implementation"
+  ],
   "author": "Justin Lee",
   "license": "ISC",
   "devDependencies": {
