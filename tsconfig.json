@@ -1,15 +1,11 @@
 {
     "compilerOptions": {
         "sourceMap": true,
-        "baseUrl": ".",
+        "baseUrl": "src",
         "outDir": "dist",
         "target": "ES2020",
         "module": "ES2020",
         "moduleResolution": "node",
-        "jsx": "react",
-        "paths": {
-            "engine": ["./packages/engine"],
-            "ui-implementation": ["./packages/ui-implementation"]
-        }
+        "jsx": "react"
     }
 }

@@ -1,18 +1,8 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-
 const config = {
     entry: {
-        engine: './packages/engine/index.ts',
-        main: {
-            dependOn: 'engine',
-            import: './packages/ui-implementation/index.ts',
-        },
+        main: './src/index.ts',
     },
     resolve: {
-        plugins: [new TsconfigPathsPlugin({})],
         extensions: ['.ts', '.tsx'],
     },
     module: {
@@ -30,18 +20,6 @@ const config = {
             },
         ],
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: path.resolve(
-                __dirname,
-                'packages/ui-implementation/index.html'
-            ),
-            title: 'Game',
-        }),
-        new CopyWebpackPlugin({
-            patterns: [{ from: './packages/ui-implementation/index.css' }],
-        }),
-    ],
 };
 
 module.exports = (_, argv) => {
