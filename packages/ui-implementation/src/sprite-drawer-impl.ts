@@ -8,12 +8,8 @@ export class SpriteDrawerImpl implements SpriteDrawer<SpriteElement> {
     private enemyContainer: Root;
 
     constructor() {
-        this.playerContainer = createRoot(
-            document.getElementById('players')
-        );
-        this.enemyContainer = createRoot(
-            document.getElementById('enemies')
-        );
+        this.playerContainer = createRoot(document.getElementById('players'));
+        this.enemyContainer = createRoot(document.getElementById('enemies'));
     }
 
     draw(element: SpriteElement, config: CharacterConfig): void {

@@ -1,5 +1,8 @@
 import { CommandType } from '../../command.interface';
-import { OngoingEffectTriggerType, OngoingEffectType } from '../../../ongoing-effects';
+import {
+    OngoingEffectTriggerType,
+    OngoingEffectType,
+} from '../../../ongoing-effects';
 import { Priority } from '../../priority';
 import { SkillType } from '../skill-type';
 import { Skill } from '../skill.interface';

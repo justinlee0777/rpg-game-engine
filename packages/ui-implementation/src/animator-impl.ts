@@ -1,4 +1,16 @@
-import { Animation, Animator, Character, CharacterType, Effect, EffectReaction, isHiding, OngoingEffect, OngoingEffectType, SkillAnimation, SkillType } from 'engine';
+import {
+    Animation,
+    Animator,
+    Character,
+    CharacterType,
+    Effect,
+    EffectReaction,
+    isHiding,
+    OngoingEffect,
+    OngoingEffectType,
+    SkillAnimation,
+    SkillType,
+} from 'engine';
 import { CharacterSpriteMapInstance } from './character-sprite-map-impl';
 
 import { damageAnimation } from './reaction-animations/damage-animation';
@@ -23,49 +35,61 @@ export class AnimatorImpl implements Animator {
         }
     }
 
-    animateReaction(effect: Effect, reaction: EffectReaction, targets: Array<Character>): Animation {
+    animateReaction(
+        effect: Effect,
+        reaction: EffectReaction,
+        targets: Array<Character>
+    ): Animation {
         if (reaction.foiled) {
             // TODO implement when implementing a foiling skill.
         }
 
         if (effect.damaging) {
-            return () => Promise.all([
-                ...targets.map(target => {
-                    if (isHiding(target)) {
-                        return Promise.resolve();
-                    } else {
-                        return damageAnimation(target)();
-                    }
-                }),
-            ]).then();
+            return () =>
+                Promise.all([
+                    ...targets.map((target) => {
+                        if (isHiding(target)) {
+                            return Promise.resolve();
+                        } else {
+                            return damageAnimation(target)();
+                        }
+                    }),
+                ]).then();
         } else if (effect.hiding) {
-            return () => Promise.all([
-                ...targets.map(target => hideAnimation.applied(target)()),
-            ]).then();
+            return () =>
+                Promise.all([
+                    ...targets.map((target) => hideAnimation.applied(target)()),
+                ]).then();
         }
         return () => Promise.resolve();
     }
 
     animateStaminaRegen(character: Character, newStamina: number): Animation {
-        const sprite = CharacterSpriteMapInstance.get(character.constructor as CharacterType);
+        const sprite = CharacterSpriteMapInstance.get(
+            character.constructor as CharacterType
+        );
         return () => {
             sprite.stamina.current.textContent = newStamina.toString();
             return Promise.resolve();
         };
     }
 
-    animateStatusEffectRemoval(character: Character, removedEffects: Array<OngoingEffect>): Animation {
-        const animations: Array<Animation> = removedEffects.map(ongoingEffect => {
-            switch (ongoingEffect.type) {
-                case OngoingEffectType.HIDE:
-                    return hideAnimation.removed(character);
-                default:
-                    return () => Promise.resolve();
+    animateStatusEffectRemoval(
+        character: Character,
+        removedEffects: Array<OngoingEffect>
+    ): Animation {
+        const animations: Array<Animation> = removedEffects.map(
+            (ongoingEffect) => {
+                switch (ongoingEffect.type) {
+                    case OngoingEffectType.HIDE:
+                        return hideAnimation.removed(character);
+                    default:
+                        return () => Promise.resolve();
+                }
             }
-        });
+        );
 
-        return () => Promise.all([
-            ...animations.map(animation => animation()),
-        ]).then();
+        return () =>
+            Promise.all([...animations.map((animation) => animation())]).then();
     }
 }

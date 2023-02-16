@@ -1,3 +1,3 @@
 import { Hider } from './hider';
 
-export class Test extends Hider { }
+export class Test extends Hider {}

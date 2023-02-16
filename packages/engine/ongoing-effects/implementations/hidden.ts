@@ -7,9 +7,13 @@ export function isHiding(skill: Skill): boolean;
 export function isHiding(characterOrSkill: Character | Skill): boolean {
     if ('current' in characterOrSkill) {
         const character = characterOrSkill;
-        return character.current.ongoingEffects?.some(ongoingEffect => ongoingEffect.type === OngoingEffectType.HIDE);
+        return character.current.ongoingEffects?.some(
+            (ongoingEffect) => ongoingEffect.type === OngoingEffectType.HIDE
+        );
     } else {
         const skill = characterOrSkill;
-        return skill.ongoingEffects?.some(ongoingEffect => ongoingEffect.type === OngoingEffectType.HIDE);
+        return skill.ongoingEffects?.some(
+            (ongoingEffect) => ongoingEffect.type === OngoingEffectType.HIDE
+        );
     }
 }

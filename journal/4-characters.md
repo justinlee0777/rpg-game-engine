@@ -6,12 +6,12 @@ I could create an arbitrary unique identifier for each character, but this viola
 
 I think when it comes to balance it becomes difficult to reason to yourself what the potency of a character will be if they can be duplicated 1-2 times. Luckily this is intended to be a single-player game (for now...) so I don't have to deal with the issue many MMOs have, where the game design has to negotiate the preferences of many players at once.
 
-
 ### Character contracts cannot specify functions
 
 This is a tough decision, and I'm not sure if it's an arbitrary decision. This essentially means characters cannot do calculations themselves; all calculations are done by some service outside of the characters.
 
 Which means:
+
 1. All character properties must be public so that implementers must have the full context.
 2. Implementers, for whatever reason (even reasons not invented yet), may need to make decision on a per-character basis.
 

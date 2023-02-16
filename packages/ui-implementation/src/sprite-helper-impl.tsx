@@ -10,7 +10,7 @@ export class SpriteHelperImpl implements SpriteHelper<SpriteElement> {
             case Hider:
             case Test:
                 let resolve;
-                const doneDrawing = new Promise<void>(r => resolve = r);
+                const doneDrawing = new Promise<void>((r) => (resolve = r));
 
                 const sprite: Sprite = {
                     doneDrawing,

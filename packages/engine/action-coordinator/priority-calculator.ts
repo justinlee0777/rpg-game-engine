@@ -7,7 +7,7 @@ import { Action } from './action.interface';
  * - A command's assigned priority;
  * - A command's stamina cost;
  * - The character's current stamina.
- * 
+ *
  * This is exported so the UI may display a hint of the ultimate turn order.
  */
 export class PriorityCalculator {
@@ -29,9 +29,12 @@ export class PriorityCalculator {
             // calculate the difference
             const difference = command.stamina - character.current.stamina;
 
-            let currentPriorityIndex = this.orderedPriorityAsc.findIndex(priority => priority === command.priority);
+            let currentPriorityIndex = this.orderedPriorityAsc.findIndex(
+                (priority) => priority === command.priority
+            );
 
-            currentPriorityIndex = currentPriorityIndex - Math.floor(difference / 5);
+            currentPriorityIndex =
+                currentPriorityIndex - Math.floor(difference / 5);
 
             if (currentPriorityIndex < 0) {
                 return Priority.DEAD_LAST;
@@ -47,17 +50,19 @@ export class PriorityCalculator {
             priority: Priority;
         }
 
-        const prioritizedActions: Array<PrioritizedAction> = actions.map(action =>
-        ({
-            action,
-            /** TODO: incorporate multiple sources. If makes sense. */
-            priority: this.calculate(action.command, action.source[0]),
-        })
+        const prioritizedActions: Array<PrioritizedAction> = actions.map(
+            (action) => ({
+                action,
+                /** TODO: incorporate multiple sources. If makes sense. */
+                priority: this.calculate(action.command, action.source[0]),
+            })
         );
 
-        return prioritizedActions.sort((a, b) => {
-            return b.priority - a.priority;
-        }).map(({ action }) => action);
+        return prioritizedActions
+            .sort((a, b) => {
+                return b.priority - a.priority;
+            })
+            .map(({ action }) => action);
     }
 }
 

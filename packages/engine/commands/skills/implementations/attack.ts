@@ -16,7 +16,6 @@ export class Attack implements Skill {
 
     priority = Priority.EAGER;
 
-
     type = CommandType.SKILL;
     skillType = SkillType.ATTACK;
 }

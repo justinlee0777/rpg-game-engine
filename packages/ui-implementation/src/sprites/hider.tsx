@@ -22,7 +22,7 @@ export class HiderSprite extends React.Component<Sprite> implements Sprite {
         this.character = props.character;
         this.doneDrawing = props.doneDrawing;
         this.avatar = props.avatar;
-        this.hitpoints = props.hitpoints
+        this.hitpoints = props.hitpoints;
         this.stamina = props.stamina;
         this.resolve = props.resolve;
     }
@@ -32,12 +32,19 @@ export class HiderSprite extends React.Component<Sprite> implements Sprite {
     }
 
     render() {
-        const src = 'https://th.bing.com/th/id/OIP.Tg20QY9WPX17amOdL1LMnAHaHa?pid=ImgDet&rs=1';
+        const src =
+            'https://th.bing.com/th/id/OIP.Tg20QY9WPX17amOdL1LMnAHaHa?pid=ImgDet&rs=1';
 
-        return <div className='character'>
-            <img className="avatar" ref={this.avatar as any} src={src} />
-            <span className='health' ref={this.hitpoints}>{this.character.current.health}</span>
-            <span className='stamina' ref={this.stamina}>{this.character.current.stamina}</span>
-        </div>;
+        return (
+            <div className="character">
+                <img className="avatar" ref={this.avatar as any} src={src} />
+                <span className="health" ref={this.hitpoints}>
+                    {this.character.current.health}
+                </span>
+                <span className="stamina" ref={this.stamina}>
+                    {this.character.current.stamina}
+                </span>
+            </div>
+        );
     }
 }

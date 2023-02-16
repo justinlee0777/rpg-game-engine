@@ -2,9 +2,9 @@ The first reasonable challenge was to tackle the game loop.
 
 From the onset, the loop looked like this:
 
-- Input stage: User provides input. This is event-driven.
-- Calculation stage: The game calculates the sequence of steps that are the result of the user's input. The sequence is then executed.
-    - A step can be: animation, stat calculation (ex. applying damage, status effects). For example, a character's attack would involve its own animation and the receiver's animation and damage calculation.
+-   Input stage: User provides input. This is event-driven.
+-   Calculation stage: The game calculates the sequence of steps that are the result of the user's input. The sequence is then executed.
+    -   A step can be: animation, stat calculation (ex. applying damage, status effects). For example, a character's attack would involve its own animation and the receiver's animation and damage calculation.
 
 All of these tasks need tight coordination of time.
 

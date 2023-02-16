@@ -6,7 +6,7 @@ I'm not going to saddle my engine with a rendering engine. But I don't want to g
 
 So for now both things will be developed side-by-side in the same codebase, but I will organize them like subpackages.
 
-The way it works now is that, since *engine* is the most important package, it is the first built; *ui-implementation* is only concerned with the UI contracts in *engine*.
+The way it works now is that, since _engine_ is the most important package, it is the first built; _ui-implementation_ is only concerned with the UI contracts in _engine_.
 
 It is possible to separate the UI contracts into their own subpackage, but I really do want to split these out someday, as much of a pain as it is for development. Splitting out the contracts seems...excessive at the moment.
 

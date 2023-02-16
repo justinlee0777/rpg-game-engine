@@ -9,5 +9,7 @@ export interface ListenForUserInput {
      * @param players the user controls in a game
      * @param enemies the user is battling in a game
      */
-    (players: Array<Character>, enemies: Array<Character>): Promise<Array<Action>>;
+    (players: Array<Character>, enemies: Array<Character>): Promise<
+        Array<Action>
+    >;
 }

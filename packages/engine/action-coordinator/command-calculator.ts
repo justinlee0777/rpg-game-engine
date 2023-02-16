@@ -16,8 +16,11 @@ export class CommandCalculator {
      * For now, simply removes stamina costs.
      */
     executeAction({ command, source }: Action): void {
-        source.forEach(character => {
-            character.current.stamina = Math.max(character.current.stamina - command.stamina, 0);
+        source.forEach((character) => {
+            character.current.stamina = Math.max(
+                character.current.stamina - command.stamina,
+                0
+            );
         });
     }
 
@@ -36,13 +39,13 @@ export class CommandCalculator {
             hiding,
             execute: () => {
                 if (command.ongoingEffects) {
-                    targets.forEach(target => {
+                    targets.forEach((target) => {
                         this.applyOngoingEffect(target, command);
                     });
                 }
 
                 if (damaging) {
-                    targets.forEach(target => {
+                    targets.forEach((target) => {
                         this.calculateDamage(target, command);
                     });
                 }
@@ -53,7 +56,10 @@ export class CommandCalculator {
     /**
      * Calculate a target's reaction to an effect,
      */
-    calculateReaction(effect: Effect, targets: Array<Character>): EffectReaction {
+    calculateReaction(
+        effect: Effect,
+        targets: Array<Character>
+    ): EffectReaction {
         // For now, foiling is not implemented as there is no character that can foil.
         return { source: effect };
     }
@@ -61,9 +67,14 @@ export class CommandCalculator {
     private applyOngoingEffect(target: Character, command: Command): void {
         let { ongoingEffects = [] } = target.current;
 
-        ongoingEffects = ongoingEffects.map(ongoingEffect => cloneDeep(ongoingEffect));
+        ongoingEffects = ongoingEffects.map((ongoingEffect) =>
+            cloneDeep(ongoingEffect)
+        );
 
-        target.current.ongoingEffects = [...ongoingEffects, ...command.ongoingEffects];
+        target.current.ongoingEffects = [
+            ...ongoingEffects,
+            ...command.ongoingEffects,
+        ];
     }
 
     private calculateDamage(target: Character, command: Command): void {

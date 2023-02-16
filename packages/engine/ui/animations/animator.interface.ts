@@ -19,7 +19,11 @@ export interface Animator {
     /**
      * @returns the necessary animation for characters reacting to actions.
      */
-    animateReaction(effect: Effect, reaction: EffectReaction, targets: Array<Character>): ReactionAnimation;
+    animateReaction(
+        effect: Effect,
+        reaction: EffectReaction,
+        targets: Array<Character>
+    ): ReactionAnimation;
 
     /**
      * @returns the animation when characters regenerate stamina at the end of the turn.
@@ -29,5 +33,8 @@ export interface Animator {
     /**
      * @returns an animation when ongoing effects are removed from characters.
      */
-    animateStatusEffectRemoval(character: Character, removedEffects: Array<OngoingEffect>): Animation;
+    animateStatusEffectRemoval(
+        character: Character,
+        removedEffects: Array<OngoingEffect>
+    ): Animation;
 }

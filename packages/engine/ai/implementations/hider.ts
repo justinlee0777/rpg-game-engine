@@ -9,9 +9,7 @@ import { AI } from '../ai.interface';
  * Test AI.
  */
 export class HiderAI implements AI {
-    characters = [
-        new Test(),
-    ];
+    characters = [new Test()];
 
     getActions(puzzle: Puzzle): Array<Action> {
         return [

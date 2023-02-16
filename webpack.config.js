@@ -1,6 +1,6 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require("path");
+const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const config = {
@@ -9,7 +9,7 @@ const config = {
         main: {
             dependOn: 'engine',
             import: './packages/ui-implementation/index.ts',
-        }
+        },
     },
     resolve: {
         plugins: [new TsconfigPathsPlugin({})],
@@ -23,22 +23,23 @@ const config = {
                     {
                         loader: 'ts-loader',
                         options: {
-                            transpileOnly: true
-                        }
-                    }
+                            transpileOnly: true,
+                        },
+                    },
                 ],
-            }
-        ]
+            },
+        ],
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, 'packages/ui-implementation/index.html'),
+            template: path.resolve(
+                __dirname,
+                'packages/ui-implementation/index.html'
+            ),
             title: 'Game',
         }),
         new CopyWebpackPlugin({
-            patterns: [
-                { from: './packages/ui-implementation/index.css' },
-            ],
+            patterns: [{ from: './packages/ui-implementation/index.css' }],
         }),
     ],
 };
