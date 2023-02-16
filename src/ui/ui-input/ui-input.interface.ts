@@ -1,5 +1,5 @@
 import { Action } from '../../action-coordinator';
-import { Character } from '../../characters';
+import { Character } from '../../characters/index';
 
 /**
  * Function that listens for user's input and determines actions out of them.

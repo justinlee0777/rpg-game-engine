@@ -1,4 +1,4 @@
-import { Character } from '../../characters';
+import { Character } from '../../characters/index';
 
 /**
  * Contract for fetching the specific UI element for a character.

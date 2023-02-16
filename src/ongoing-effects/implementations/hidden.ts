@@ -1,5 +1,5 @@
 import { Skill } from '../../commands';
-import { Character } from '../../characters';
+import { Character } from '../../characters/index';
 import { OngoingEffectType } from '../ongoing-effect.interface';
 
 export function isHiding(character: Character): boolean;

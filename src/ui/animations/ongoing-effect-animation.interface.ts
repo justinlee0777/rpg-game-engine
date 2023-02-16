@@ -1,4 +1,4 @@
-import { Character } from 'packages/engine/characters';
+import { Character } from '../../characters/index';
 
 import { Animation } from './animation.interface';
 

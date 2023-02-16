@@ -1,4 +1,4 @@
-import { Character } from '../../characters';
+import { Character } from '../../characters/index';
 
 /**
  * Configuration for how the sprite should be drawn.

@@ -1,4 +1,4 @@
-import { Character } from '../characters';
+import { Character } from '../characters/index';
 import { Command, Priority } from '../commands';
 import { Action } from './action.interface';
 

@@ -1,6 +1,6 @@
-import { OngoingEffect } from 'packages/engine/ongoing-effects';
-import { Effect, EffectReaction } from '../../action-coordinator';
-import { Character } from '../../characters';
+import { OngoingEffect } from '../../ongoing-effects/index';
+import { Effect, EffectReaction } from '../../action-coordinator/index';
+import { Character } from '../../characters/index';
 import { SkillType } from '../../commands/skills/skill-type';
 
 import { Animation } from './animation.interface';

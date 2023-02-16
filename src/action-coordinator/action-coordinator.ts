@@ -1,8 +1,8 @@
-import { AI } from '../ai';
-import { Character } from '../characters';
-import { OngoingEffect } from '../ongoing-effects';
-import { Puzzle } from '../puzzle';
-import { UIImplementation } from '../ui';
+import { AI } from '../ai/index';
+import { Character } from '../characters/index';
+import { OngoingEffect } from '../ongoing-effects/index';
+import { Puzzle } from '../puzzle/index';
+import { UIImplementation } from '../ui/index';
 
 import { Action } from './action.interface';
 import { CommandCalculatorInstance } from './command-calculator';
@@ -23,7 +23,7 @@ interface Turn {
  * Represents the "calculation" stage of the game loop. The game takes the user's inputs and determines the flow of action.
  */
 export class ActionCoordinator {
-    constructor(private uiImpl: UIImplementation) {}
+    constructor(private uiImpl: UIImplementation) { }
 
     /**
      * Given:

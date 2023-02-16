@@ -1,5 +1,5 @@
 import { Action } from '../action-coordinator';
-import { Character } from '../characters';
+import { Character } from '../characters/index';
 import { Puzzle } from '../puzzle';
 
 /**

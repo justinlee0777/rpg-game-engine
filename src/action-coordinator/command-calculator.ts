@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash-es';
 
-import { Character } from '../characters';
+import { Character } from '../characters/index';
 import { Command } from '../commands';
 import { isHiding } from '../ongoing-effects/implementations';
 
