@@ -1,7 +1,6 @@
 import { OngoingEffect } from '../../ongoing-effects/index';
 import { Effect, EffectReaction } from '../../action-coordinator/index';
 import { Character } from '../../characters/index';
-import { SkillType } from '../../commands/skills/skill-type';
 
 import { Animation } from './animation.interface';
 import { ReactionAnimation } from './reaction-animation.interface';
@@ -12,9 +11,9 @@ import { SkillAnimation } from './skill-animation.interface';
  */
 export interface Animator {
     /**
-     * @returns the necessary animations for skills.
+     * @returns the necessary animations for commands.
      */
-    animateSkill(type: SkillType, sources: Array<Character>): SkillAnimation;
+    animateCommand(type: string, sources: Array<Character>): SkillAnimation;
 
     /**
      * @returns the necessary animation for characters reacting to actions.

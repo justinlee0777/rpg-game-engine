@@ -8,12 +8,8 @@
         "moduleResolution": "node",
         "declaration": true,
         "paths": {
-            "characters": [
-                "./src/characters/implementations/index.ts"
-            ],
-            "skills": [
-                "./src/commands/skills/implementations/index.ts"
-            ],
+            "characters": ["./src/characters/implementations/index.ts"],
+            "skills": ["./src/commands/skills/implementations/index.ts"]
         }
     }
 }

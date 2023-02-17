@@ -1,10 +1,10 @@
+import { OngoingEffect } from '../ongoing-effects/index';
 import { Priority } from './priority';
-import { Skill } from './skills';
 
 /**
  * Properties for all commands.
  */
-export interface BaseCommand {
+export interface Command {
     /**
      * All commands need priority for the game engine to create the flow of action.
      */
@@ -12,14 +12,16 @@ export interface BaseCommand {
 
     /** Stamina usage for command. */
     stamina: number;
-}
 
-/**
- * Unique identifier for commands.
- * Maybe there will be an Item command? Perhaps will not need this in the future.
- */
-export enum CommandType {
-    SKILL = 'SKILL',
-}
+    type: string;
 
-export type Command = Skill;
+    /**
+     * How much damage the skill does to an enemy. Likely optional in the future.
+     */
+    damage?: number;
+
+    /**
+     * Ongoing effects to apply.
+     */
+    ongoingEffects?: Array<OngoingEffect>;
+}

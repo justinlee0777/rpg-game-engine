@@ -23,7 +23,7 @@ interface Turn {
  * Represents the "calculation" stage of the game loop. The game takes the user's inputs and determines the flow of action.
  */
 export class ActionCoordinator {
-    constructor(private uiImpl: UIImplementation) { }
+    constructor(private uiImpl: UIImplementation) {}
 
     /**
      * Given:
@@ -63,8 +63,8 @@ export class ActionCoordinator {
 
         for (const { action, effect, reaction } of turns) {
             const { beforeEffect, runEffect, afterEffect } =
-                this.uiImpl.Animator.animateSkill(
-                    action.command.skillType,
+                this.uiImpl.Animator.animateCommand(
+                    action.command.type,
                     action.source
                 );
 
