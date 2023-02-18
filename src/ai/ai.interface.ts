@@ -1,4 +1,4 @@
-import { Action } from '../action-coordinator';
+import { Action } from '../engine';
 import { Character } from '../characters/index';
 import { Puzzle } from '../puzzle';
 

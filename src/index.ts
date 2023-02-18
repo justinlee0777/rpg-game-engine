@@ -1,4 +1,4 @@
-export * from './action-coordinator/index';
+export * from './engine/index';
 
 export * from './ai/index';
 
