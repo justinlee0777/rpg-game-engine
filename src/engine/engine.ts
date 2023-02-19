@@ -1,3 +1,4 @@
+import { Character } from '../characters';
 import { OngoingEffect } from '../ongoing-effects/index';
 import { Puzzle } from '../puzzle/index';
 
@@ -107,7 +108,12 @@ export class Engine {
         });
     }
 
-    private resolveOngoingEffectsEndOfTurn(): void {
+    private resolveOngoingEffectsEndOfTurn(): Map<
+        Character,
+        Array<OngoingEffect>
+    > {
+        const map = new Map();
+
         const characters = [
             ...this.puzzle.players,
             ...this.puzzle.enemies.characters,
@@ -128,6 +134,10 @@ export class Engine {
             });
 
             character.current.ongoingEffects = ongoingEffects;
+
+            map.set(character, removedEffects);
         });
+
+        return map;
     }
 }

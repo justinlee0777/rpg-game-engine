@@ -1,3 +1,5 @@
+import { Character } from '../characters';
+import { OngoingEffect } from '../ongoing-effects';
 import { Action } from './action.interface';
 import { Effect, EffectReaction } from './effect.interface';
 
@@ -19,7 +21,7 @@ export interface ActionEvent {
 }
 export interface OngoingEffectEvent {
     event: {
-        execute(): void;
+        execute(): Map<Character, Array<OngoingEffect>>;
     };
     type: GameEventType.ONGOING_EFFECT;
 }
