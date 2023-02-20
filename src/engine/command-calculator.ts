@@ -1,8 +1,7 @@
 import { cloneDeep } from 'lodash-es';
 
+import { OngoingEffect } from '../ongoing-effects';
 import { Character } from '../characters/index';
-import { Command } from '../commands';
-import { isHiding } from '../ongoing-effects/implementations';
 
 import { Action } from './action.interface';
 import { Effect, EffectReaction } from './effect.interface';
@@ -31,24 +30,38 @@ export class CommandCalculator {
     calculateEffect(action: Action): Effect {
         const { command, targets } = action;
 
-        const damaging = !!command.damage;
-        const hiding = isHiding(command);
+        const targetEffects = targets.map((target) => {
+            const ongoingEffects = target.current.ongoingEffects ?? [];
+            const calculatedDamage = ongoingEffects.reduce(
+                (currentDamage, effect) => {
+                    return (
+                        effect.changeDamage?.(currentDamage) ?? currentDamage
+                    );
+                },
+                command.damage ?? 0
+            );
+
+            const damage = Math.max(0, calculatedDamage);
+
+            return {
+                target,
+                damage,
+                appliedEffects: [...(command.ongoingEffects ?? [])],
+            };
+        });
 
         return {
-            damaging,
-            hiding,
+            targets: targetEffects,
             execute: () => {
-                if (command.ongoingEffects) {
-                    targets.forEach((target) => {
-                        this.applyOngoingEffect(target, command);
-                    });
-                }
+                targetEffects.forEach((effect) => {
+                    const { target, appliedEffects, damage } = effect;
 
-                if (damaging) {
-                    targets.forEach((target) => {
-                        this.calculateDamage(target, command);
-                    });
-                }
+                    this.applyOngoingEffect(target, appliedEffects);
+                    target.current.health = Math.max(
+                        0,
+                        target.current.health - damage
+                    );
+                });
             },
         };
     }
@@ -64,24 +77,19 @@ export class CommandCalculator {
         return { source: effect };
     }
 
-    private applyOngoingEffect(target: Character, command: Command): void {
-        let { ongoingEffects = [] } = target.current;
+    private applyOngoingEffect(
+        target: Character,
+        ongoingEffects: Array<OngoingEffect>
+    ): void {
+        const currentOngoingEffects = target.current.ongoingEffects ?? [];
 
         ongoingEffects = ongoingEffects.map((ongoingEffect) =>
             cloneDeep(ongoingEffect)
         );
 
         target.current.ongoingEffects = [
+            ...currentOngoingEffects,
             ...ongoingEffects,
-            ...command.ongoingEffects,
         ];
-    }
-
-    private calculateDamage(target: Character, command: Command): void {
-        if (isHiding(target)) {
-            return;
-        } else {
-            target.current.health -= command.damage;
-        }
     }
 }

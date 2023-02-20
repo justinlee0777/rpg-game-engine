@@ -1,7 +1,3 @@
-export enum OngoingEffectType {
-    HIDE = 'Hide',
-}
-
 export enum OngoingEffectTriggerType {
     IMMEDIATE = 'Immediate',
 }
@@ -14,10 +10,12 @@ export type OngoingEffectTrigger = ImmediateOngoingEffectTrigger;
 
 export interface OngoingEffect {
     /** For the @see {@link OngoingEffectCalculator}. */
-    type: OngoingEffectType;
+    type: string;
 
     turnDuration: number;
 
     /** For the @see {@link CommandCalculator}. */
     trigger: OngoingEffectTrigger;
+
+    changeDamage?: (damage: number) => number;
 }

@@ -1,15 +1,19 @@
+import { OngoingEffect } from '../ongoing-effects';
+import { Character } from '../characters';
+
+export interface TargetEffect {
+    target: Character;
+    damage: number;
+    appliedEffects?: Array<OngoingEffect>;
+}
+
 /**
  * Effect of an action. Used only to get reactions from a character.
  */
 export interface Effect {
+    targets: Array<TargetEffect>;
     /** Execute the action, causing some effect on the puzzle itself. */
     execute(): void;
-
-    /** Whether the effect is damaging. */
-    damaging: boolean;
-
-    /** Whether effect hides the target. */
-    hiding: boolean;
 }
 
 /**
