@@ -65,5 +65,3 @@ export class PriorityCalculator {
             .map(({ action }) => action);
     }
 }
-
-export const PriorityCalculatorInstance = new PriorityCalculator();

@@ -12,16 +12,18 @@ import {
     OngoingEffectEvent,
     StaminaRegenEvent,
 } from './game-event.interface';
-import { PriorityCalculatorInstance } from './priority-calculator';
+import { PriorityCalculator } from './priority-calculator';
 
 /**
  * Represents the "calculation" stage of the game loop. The game takes the user's inputs and determines the flow of action.
  */
 export class Engine {
     private commandCalculator: CommandCalculator;
+    private priorityCalculator: PriorityCalculator;
 
     constructor(private puzzle: Puzzle) {
         this.commandCalculator = new CommandCalculator();
+        this.priorityCalculator = new PriorityCalculator();
     }
 
     async getResults(playerActions: Array<Action>): Promise<Array<GameEvent>> {
@@ -29,7 +31,7 @@ export class Engine {
             const enemyActions = this.puzzle.enemies.getActions(this.puzzle);
 
             // Order the player and the enemy's actions.
-            const actions: Array<Action> = PriorityCalculatorInstance.order([
+            const actions: Array<Action> = this.priorityCalculator.order([
                 ...playerActions,
                 ...enemyActions,
             ]);
@@ -90,6 +92,10 @@ export class Engine {
         }
 
         return null;
+    }
+
+    orderActions(actions: Array<Action>): Array<Action> {
+        return this.priorityCalculator.order(actions);
     }
 
     /**
