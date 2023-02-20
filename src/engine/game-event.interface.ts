@@ -37,4 +37,8 @@ export interface EndGameEvent {
     type: GameEventType.END_GAME;
 }
 
-export type GameEvent = ActionEvent | OngoingEffectEvent | StaminaRegenEvent;
+export type GameEvent =
+    | ActionEvent
+    | OngoingEffectEvent
+    | StaminaRegenEvent
+    | EndGameEvent;

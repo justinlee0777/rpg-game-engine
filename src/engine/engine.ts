@@ -1,3 +1,5 @@
+import { cloneDeep } from 'lodash-es';
+
 import { Character } from '../characters';
 import { OngoingEffect } from '../ongoing-effects/index';
 import { Puzzle } from '../puzzle/index';
@@ -69,29 +71,19 @@ export class Engine {
             const endOfTurnEvent: OngoingEffectEvent = {
                 type: GameEventType.ONGOING_EFFECT,
                 event: {
-                    execute: () => this.resolveOngoingEffectsEndOfTurn(),
+                    execute: () =>
+                        this.resolveOngoingEffectsEndOfTurn(this.puzzle),
                 },
             };
 
-            resolve([...events, staminaRegenEvent, endOfTurnEvent]);
+            const simulatedGameEvents = this.simulateGame([
+                ...events,
+                staminaRegenEvent,
+                endOfTurnEvent,
+            ]);
+
+            resolve(simulatedGameEvents);
         });
-    }
-
-    /**
-     * TODO: This should be incorporated in 'getResults'.
-     */
-    endGame(): EndGameEvent | null {
-        const puzzle = this.puzzle;
-        if (
-            puzzle.victoryConditions.some((condition) =>
-                condition(puzzle.enemies.characters)
-            ) ||
-            puzzle.loseConditions.some((condition) => condition(puzzle.players))
-        ) {
-            return { type: GameEventType.END_GAME };
-        }
-
-        return null;
     }
 
     orderActions(actions: Array<Action>): Array<Action> {
@@ -114,16 +106,12 @@ export class Engine {
         });
     }
 
-    private resolveOngoingEffectsEndOfTurn(): Map<
-        Character,
-        Array<OngoingEffect>
-    > {
+    private resolveOngoingEffectsEndOfTurn(
+        puzzle: Puzzle
+    ): Map<Character, Array<OngoingEffect>> {
         const map = new Map();
 
-        const characters = [
-            ...this.puzzle.players,
-            ...this.puzzle.enemies.characters,
-        ];
+        const characters = [...puzzle.players, ...puzzle.enemies.characters];
 
         characters.forEach((character) => {
             const ongoingEffects: Array<OngoingEffect> = [];
@@ -145,5 +133,88 @@ export class Engine {
         });
 
         return map;
+    }
+
+    private endGame(puzzle: Puzzle): EndGameEvent | null {
+        if (
+            puzzle.victoryConditions.some((condition) =>
+                condition(puzzle.enemies.characters)
+            ) ||
+            puzzle.loseConditions.some((condition) => condition(puzzle.players))
+        ) {
+            return { type: GameEventType.END_GAME };
+        }
+
+        return null;
+    }
+
+    /**
+     * Simulate the events on the current puzzle and end the game early if the events are conclusive.
+     */
+    private simulateGame(events: Array<GameEvent>): Array<GameEvent> {
+        const copyPuzzle = cloneDeep(this.puzzle);
+
+        const newEvents = [];
+
+        for (const gameEvent of events) {
+            switch (gameEvent.type) {
+                case GameEventType.ACTION:
+                    const { event } = this.simulateActionEvent(
+                        copyPuzzle,
+                        gameEvent
+                    );
+                    event.execute();
+                    event.effect.execute();
+                    break;
+                case GameEventType.ONGOING_EFFECT:
+                // TODO
+            }
+
+            newEvents.push(gameEvent);
+
+            if (this.endGame(copyPuzzle)) {
+                newEvents.push({
+                    type: GameEventType.END_GAME,
+                });
+                break;
+            }
+        }
+
+        return newEvents;
+    }
+
+    private simulateActionEvent(
+        puzzle: Puzzle,
+        original: ActionEvent
+    ): ActionEvent {
+        const characters = [...puzzle.players, ...puzzle.enemies.characters];
+
+        const { action } = original.event;
+
+        const newAction: Action = {
+            source: action.source.map((character) =>
+                characters.find((c) => c.constructor === character.constructor)
+            ),
+            command: action.command,
+            targets: action.targets.map((character) =>
+                characters.find((c) => c.constructor === character.constructor)
+            ),
+        };
+
+        const newEffect = this.commandCalculator.calculateEffect(newAction);
+        const newReaction = this.commandCalculator.calculateReaction(
+            newEffect,
+            newAction.targets
+        );
+
+        return {
+            type: GameEventType.ACTION,
+            event: {
+                action: newAction,
+                effect: newEffect,
+                reaction: newReaction,
+                execute: () => this.commandCalculator.executeAction(action),
+            },
+        };
     }
 }
