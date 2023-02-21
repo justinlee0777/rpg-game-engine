@@ -1,3 +1,5 @@
+import { Character } from '../characters';
+
 export enum OngoingEffectTriggerType {
     IMMEDIATE = 'Immediate',
 }
@@ -17,12 +19,18 @@ export interface OngoingEffect {
     /** For the @see {@link CommandCalculator}. */
     trigger: OngoingEffectTrigger;
 
-    apply: () => OngoingEffect;
+    /**
+     * @param target to apply effect on. For example, multiple applications of the effect may differ depending on the character's state.
+     */
+    apply: (target: Character) => OngoingEffect;
 
     changeDamage?: (damage: number) => number;
 
+    /**
+     * Characters are provided in case multiple stacks of the effect change the damage.
+     */
     causeDamage?: {
-        startOfTurn?: () => number;
-        endOfTurn?: () => number;
+        startOfTurn?: (target: Character) => number;
+        endOfTurn?: (target: Character) => number;
     };
 }

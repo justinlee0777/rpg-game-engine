@@ -1,6 +1,6 @@
 import { cloneDeep, differenceWith } from 'lodash-es';
 
-import { Stats } from '../characters';
+import { Character, Stats } from '../characters';
 import { OngoingEffect } from '../ongoing-effects';
 import { Puzzle } from '../puzzle/index';
 
@@ -108,7 +108,7 @@ export class CommandCalculator {
         const { command, targets } = action;
 
         targets.forEach((target) => {
-            const currentOngoingEffects = target.current.ongoingEffects ?? [];
+            let currentOngoingEffects = target.current.ongoingEffects ?? [];
             const calculatedDamage = currentOngoingEffects.reduce(
                 (currentDamage, effect) => {
                     return (
@@ -121,7 +121,15 @@ export class CommandCalculator {
             const damage = Math.max(0, calculatedDamage);
 
             const ongoingEffects = (action.command.ongoingEffects ?? []).map(
-                (ongoingEffect) => ongoingEffect.apply()
+                (ongoingEffect) => ongoingEffect.apply(target)
+            );
+
+            // Replace existing effects of the same type with the re-applied effect
+            currentOngoingEffects = currentOngoingEffects.filter(
+                (effect) =>
+                    !ongoingEffects.some(
+                        (newEffect) => newEffect.type === effect.type
+                    )
             );
 
             target.current.ongoingEffects = [
@@ -200,7 +208,7 @@ export class CommandCalculator {
             const ongoingEffects: Array<OngoingEffect> = [];
 
             character.current.ongoingEffects?.forEach((ongoingEffect) => {
-                let causeDamage: (() => number) | undefined;
+                let causeDamage: ((character: Character) => number) | undefined;
 
                 if (endOfTurn) {
                     causeDamage = ongoingEffect.causeDamage?.endOfTurn;
@@ -208,7 +216,7 @@ export class CommandCalculator {
                     causeDamage = ongoingEffect.causeDamage?.startOfTurn;
                 }
 
-                character.current.health -= causeDamage?.() ?? 0;
+                character.current.health -= causeDamage?.(character) ?? 0;
 
                 if (endOfTurn) {
                     ongoingEffect.turnDuration -= 1;
