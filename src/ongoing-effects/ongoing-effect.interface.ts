@@ -17,5 +17,12 @@ export interface OngoingEffect {
     /** For the @see {@link CommandCalculator}. */
     trigger: OngoingEffectTrigger;
 
+    apply: () => OngoingEffect;
+
     changeDamage?: (damage: number) => number;
+
+    causeDamage?: {
+        startOfTurn?: () => number;
+        endOfTurn?: () => number;
+    };
 }

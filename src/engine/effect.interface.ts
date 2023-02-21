@@ -10,19 +10,48 @@ export interface EffectDelta extends Omit<Stats, 'ongoingEffects'> {
     };
 }
 
-/**
- * Effect of an action. Used only to get reactions from a character.
- */
-export interface Effect {
-    source: Array<{
-        character: Character;
-        delta: EffectDelta;
-    }>;
-    targets: Array<{
-        character: Character;
-        delta: EffectDelta;
-    }>;
+export interface EffectedCharacter {
+    character: Character;
+    delta: EffectDelta;
+}
+
+export enum EffectType {
+    ACTION = 'Action',
+    ONGOING_EFFECT = 'OngoingEffect',
+    STAMINA_REGEN = 'StaminaRegen',
+    END_GAME = 'EndGame',
+}
+
+export interface ActionEffect {
+    source: Array<EffectedCharacter>;
+    targets: Array<EffectedCharacter>;
     /** Execute the action, causing some effect on the puzzle itself. */
     execute(): void;
     command: Command;
+    type: EffectType.ACTION;
 }
+
+export interface OngoingEffectEffect {
+    characters: Array<EffectedCharacter>;
+    execute(): void;
+    type: EffectType.ONGOING_EFFECT;
+}
+
+export interface StaminaRegenEffect {
+    characters: Array<EffectedCharacter>;
+    execute(): void;
+    type: EffectType.STAMINA_REGEN;
+}
+
+export interface EndGameEffect {
+    type: EffectType.END_GAME;
+}
+
+/**
+ * Effect of an action.
+ */
+export type Effect =
+    | ActionEffect
+    | OngoingEffectEffect
+    | StaminaRegenEffect
+    | EndGameEffect;
