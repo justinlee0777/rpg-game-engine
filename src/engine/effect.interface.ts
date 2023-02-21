@@ -1,28 +1,28 @@
 import { OngoingEffect } from '../ongoing-effects';
-import { Character } from '../characters';
+import { Character, Stats } from '../characters';
+import { Command } from '../commands';
 
-export interface TargetEffect {
-    target: Character;
-    damage: number;
-    appliedEffects?: Array<OngoingEffect>;
+export interface EffectDelta extends Omit<Stats, 'ongoingEffects'> {
+    ongoingEffects: {
+        current: Array<OngoingEffect>;
+        added: Array<OngoingEffect>;
+        removed: Array<OngoingEffect>;
+    };
 }
 
 /**
  * Effect of an action. Used only to get reactions from a character.
  */
 export interface Effect {
-    targets: Array<TargetEffect>;
+    source: Array<{
+        character: Character;
+        delta: EffectDelta;
+    }>;
+    targets: Array<{
+        character: Character;
+        delta: EffectDelta;
+    }>;
     /** Execute the action, causing some effect on the puzzle itself. */
     execute(): void;
-}
-
-/**
- * The reaction to an effect. @see EffectReaction#foiled for details.
- */
-export interface EffectReaction {
-    source: Effect;
-    /**
-     * Whether the effect is foiled or not. If this is filled, this means the effect is foiled.
-     */
-    foiled?: Effect;
+    command: Command;
 }

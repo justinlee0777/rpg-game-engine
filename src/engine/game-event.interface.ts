@@ -1,7 +1,6 @@
 import { Character } from '../characters';
 import { OngoingEffect } from '../ongoing-effects';
-import { Action } from './action.interface';
-import { Effect, EffectReaction } from './effect.interface';
+import { Effect } from './effect.interface';
 
 export enum GameEventType {
     ACTION = 'action',
@@ -11,12 +10,7 @@ export enum GameEventType {
 }
 
 export interface ActionEvent {
-    event: {
-        action: Action;
-        effect: Effect;
-        reaction: EffectReaction;
-        execute(): void;
-    };
+    event: Effect;
     type: GameEventType.ACTION;
 }
 export interface OngoingEffectEvent {

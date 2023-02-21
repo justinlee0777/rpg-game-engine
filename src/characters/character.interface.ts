@@ -33,4 +33,6 @@ export interface Character {
      * The stats the character currently has.
      */
     current: Stats;
+
+    type: string;
 }

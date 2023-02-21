@@ -1,19 +1,10 @@
-import { cloneDeep } from 'lodash-es';
-
 import { Character } from '../characters';
 import { OngoingEffect } from '../ongoing-effects/index';
 import { Puzzle } from '../puzzle/index';
 
 import { Action } from './action.interface';
 import { CommandCalculator } from './command-calculator';
-import {
-    ActionEvent,
-    EndGameEvent,
-    GameEvent,
-    GameEventType,
-    OngoingEffectEvent,
-    StaminaRegenEvent,
-} from './game-event.interface';
+import { GameEvent, GameEventType } from './game-event.interface';
 import { PriorityCalculator } from './priority-calculator';
 
 /**
@@ -33,56 +24,42 @@ export class Engine {
             const enemyActions = this.puzzle.enemies.getActions(this.puzzle);
 
             // Order the player and the enemy's actions.
+            // TOOD: This may need to be placed somewhere else if commands deplete the stamina of others.
             const actions: Array<Action> = this.priorityCalculator.order([
                 ...playerActions,
                 ...enemyActions,
             ]);
 
-            const events: Array<GameEvent> = [];
+            const [effects, endGame] = this.commandCalculator.calculateChanges(
+                this.puzzle,
+                actions,
+                this.endGame
+            );
 
-            actions.forEach((action) => {
-                const effect = this.commandCalculator.calculateEffect(action);
-                const reaction = this.commandCalculator.calculateReaction(
-                    effect,
-                    action.targets
-                );
+            const events: Array<GameEvent> = effects.map((effect) => ({
+                type: GameEventType.ACTION,
+                event: effect,
+            }));
 
-                const actionEvent: ActionEvent = {
-                    type: GameEventType.ACTION,
+            if (!endGame) {
+                events.push({
+                    type: GameEventType.STAMINA_REGEN,
                     event: {
-                        action,
-                        effect,
-                        reaction,
-                        execute: () =>
-                            this.commandCalculator.executeAction(action),
+                        execute: () => this.regenerateStamina(),
                     },
-                };
+                });
 
-                events.push(actionEvent);
-            });
+                events.push({
+                    type: GameEventType.ONGOING_EFFECT,
+                    event: {
+                        execute: () =>
+                            // TODO: Wait, this needs to be calculated if this ends the game as well. This should all come from the calculator.
+                            this.resolveOngoingEffectsEndOfTurn(this.puzzle),
+                    },
+                });
+            }
 
-            const staminaRegenEvent: StaminaRegenEvent = {
-                type: GameEventType.STAMINA_REGEN,
-                event: {
-                    execute: () => this.regenerateStamina(),
-                },
-            };
-
-            const endOfTurnEvent: OngoingEffectEvent = {
-                type: GameEventType.ONGOING_EFFECT,
-                event: {
-                    execute: () =>
-                        this.resolveOngoingEffectsEndOfTurn(this.puzzle),
-                },
-            };
-
-            const simulatedGameEvents = this.simulateGame([
-                ...events,
-                staminaRegenEvent,
-                endOfTurnEvent,
-            ]);
-
-            resolve(simulatedGameEvents);
+            resolve(events);
         });
     }
 
@@ -135,86 +112,12 @@ export class Engine {
         return map;
     }
 
-    private endGame(puzzle: Puzzle): EndGameEvent | null {
-        if (
+    private endGame(puzzle: Puzzle): boolean {
+        return (
             puzzle.victoryConditions.some((condition) =>
                 condition(puzzle.enemies.characters)
             ) ||
             puzzle.loseConditions.some((condition) => condition(puzzle.players))
-        ) {
-            return { type: GameEventType.END_GAME };
-        }
-
-        return null;
-    }
-
-    /**
-     * Simulate the events on the current puzzle and end the game early if the events are conclusive.
-     */
-    private simulateGame(events: Array<GameEvent>): Array<GameEvent> {
-        const copyPuzzle = cloneDeep(this.puzzle);
-
-        const newEvents = [];
-
-        for (const gameEvent of events) {
-            switch (gameEvent.type) {
-                case GameEventType.ACTION:
-                    const { event } = this.simulateActionEvent(
-                        copyPuzzle,
-                        gameEvent
-                    );
-                    event.execute();
-                    event.effect.execute();
-                    break;
-                case GameEventType.ONGOING_EFFECT:
-                // TODO
-            }
-
-            newEvents.push(gameEvent);
-
-            if (this.endGame(copyPuzzle)) {
-                newEvents.push({
-                    type: GameEventType.END_GAME,
-                });
-                break;
-            }
-        }
-
-        return newEvents;
-    }
-
-    private simulateActionEvent(
-        puzzle: Puzzle,
-        original: ActionEvent
-    ): ActionEvent {
-        const characters = [...puzzle.players, ...puzzle.enemies.characters];
-
-        const { action } = original.event;
-
-        const newAction: Action = {
-            source: action.source.map((character) =>
-                characters.find((c) => c.constructor === character.constructor)
-            ),
-            command: action.command,
-            targets: action.targets.map((character) =>
-                characters.find((c) => c.constructor === character.constructor)
-            ),
-        };
-
-        const newEffect = this.commandCalculator.calculateEffect(newAction);
-        const newReaction = this.commandCalculator.calculateReaction(
-            newEffect,
-            newAction.targets
         );
-
-        return {
-            type: GameEventType.ACTION,
-            event: {
-                action: newAction,
-                effect: newEffect,
-                reaction: newReaction,
-                execute: () => this.commandCalculator.executeAction(action),
-            },
-        };
     }
 }
