@@ -1,3 +1,4 @@
+import { Character } from '../characters/index';
 import { OngoingEffect } from '../ongoing-effects/index';
 import { Priority } from './priority';
 
@@ -18,7 +19,7 @@ export interface Command {
     /**
      * How much damage the skill does to an enemy. Likely optional in the future.
      */
-    damage?: number;
+    damage?: (source: Array<Character>) => number;
 
     /**
      * Ongoing effects to apply.

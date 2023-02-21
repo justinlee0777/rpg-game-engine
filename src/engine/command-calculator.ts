@@ -115,7 +115,7 @@ export class CommandCalculator {
                         effect.changeDamage?.(currentDamage) ?? currentDamage
                     );
                 },
-                command.damage ?? 0
+                command.damage?.(action.source) ?? 0
             );
 
             const damage = Math.max(0, calculatedDamage);
