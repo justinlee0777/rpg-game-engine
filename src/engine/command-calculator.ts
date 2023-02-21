@@ -193,17 +193,24 @@ export class CommandCalculator {
         };
     }
 
-    private executeOngoingEffects(
-        puzzle: Puzzle,
-        subtractTurnDuration = false
-    ): void {
+    private executeOngoingEffects(puzzle: Puzzle, endOfTurn = false): void {
         const characters = [...puzzle.players, ...puzzle.enemies.characters];
 
         characters.forEach((character) => {
             const ongoingEffects: Array<OngoingEffect> = [];
 
             character.current.ongoingEffects?.forEach((ongoingEffect) => {
-                if (subtractTurnDuration) {
+                let causeDamage: (() => number) | undefined;
+
+                if (endOfTurn) {
+                    causeDamage = ongoingEffect.causeDamage?.endOfTurn;
+                } else {
+                    causeDamage = ongoingEffect.causeDamage?.startOfTurn;
+                }
+
+                character.current.health -= causeDamage?.() ?? 0;
+
+                if (endOfTurn) {
                     ongoingEffect.turnDuration -= 1;
                 }
 
